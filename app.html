@@ -946,8 +946,8 @@ function frameLayer(o){return Object.assign(defaultLayer(),{
   motions:[],speed:1,amp:1,easing:"ease",phase:0,headMove:false,headShake:false
 },o,{motions:new Set(o.motions||[])});}
 function buildFrameLayers(){return[
-  frameLayer({text:"HL_Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"left",lx:-4,swayAmp:0,ly:-314,lscale:.017,track:1,seed:7001}),
-  frameLayer({text:"\nGOON! KAIJUU",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:6,ly:296,lscale:.065,lead:3.0,track:1,seed:7003})
+  frameLayer({text:"GOON! KAIJUU",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"left",lx:-4,swayAmp:0,ly:-314,lscale:.017,track:1,seed:7001}),
+  frameLayer({text:"HL_Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:6,ly:296,lscale:.017,track:1,seed:7003})
 ];}
 const FRAME_LAYERS=buildFrameLayers();
 
@@ -1471,8 +1471,8 @@ function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
   drawBandText(W,H,t,F,time,complementaryText(_band));
   /* FRAME内クレジット：外径からの距離を X（横＝marginの余白）に合わせ、上端/下端を外径から D に固定 */
   {const D=(6/100)*Math.min(W,H);
-   FRAME_LAYERS[0].ly=D+(FRAME_LAYERS[0]._h||8)/2-H/2;    /* 上：ブロック上端が外径から D */
-   FRAME_LAYERS[1].ly=H/2-D-(FRAME_LAYERS[0]._h||8)/2;}   /* 下：上クレジットと視覚中心を上下対称化（=下げる）。帯からの体感距離を均等に */
+   FRAME_LAYERS[0].ly=D+(FRAME_LAYERS[0]._h||8)/2-H/2;    /* 右上 */
+   FRAME_LAYERS[1].ly=H/2-D-(FRAME_LAYERS[1]._h||8)/2+2;}   /* 右下：2px下げ */   /* 下：上クレジットと視覚中心を上下対称化（=下げる）。帯からの体感距離を均等に */
   // クレジット：FRAME色が変わるたびに 左上=左から/右下=右からスライドイン＋旧帯色で一度点滅
   if(_credPrevIdx===null){_credPrevIdx=F.colIdx;}
   else if(F.colIdx!==_credPrevIdx){
