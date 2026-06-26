@@ -2231,7 +2231,7 @@ const ANALYSIS=[{t:0,w:"GAGAGAGAGAGAGAGA",n:"GAGAGAGAGAGAGAGA",g:50,o:1},
 {t:163.73,w:"BACK",n:"BACK"},
 {t:164.06,w:"THE",n:"THE"},
 {t:164.24,w:"WE GET BACK THE SILENT SEA.",n:"WE GET BACK THE SILENT S",m:1}];
-function createMV(){
+function createMV(_silent){
   S.cards=S.cards.filter(c=>!c.auto);
   S.timeline=[];
   const _SONG=Math.max.apply(null,ANALYSIS.map(s=>s.t))||1;
@@ -2369,9 +2369,9 @@ function createMV(){
   S.timeline.sort((a,b)=>a.start-b.start);tlSelItem=null;
   if(S.timeline.length)applySnapshot(S.timeline[0].card.data);
   renderLayerList();syncUI();renderCards();renderTimeline();
-  note("CREATE: 解析から "+ANALYSIS.length+" ブロックでMVを生成（使った素材をSTOCKへ）");
+  if(!_silent)note("CREATE: 解析から "+ANALYSIS.length+" ブロックでMVを生成（使った素材をSTOCKへ）");
 }
-$("btnCreate").onclick=createMV;
+$("btnCreate").onclick=()=>createMV();
 
 /* tap timing */
 function tap(){if(!S.cards.length){note("節がありません");return;}
@@ -2578,7 +2578,7 @@ if(!loadFromHash()){
   S.layers=[defaultLayer(),defaultLayer(),defaultLayer(),defaultLayer(),defaultLayer()];S.active=0;
   remixAll();   /* 初期：5レイヤーをランダム生成（L1は可読・配色は1〜3色） */
 }
-renderLayerList();renderCards();syncUI();setMode(S.mode);
+renderLayerList();renderCards();syncUI();setMode(S.mode);if(S.mode==="mv"){createMV(true);}/* 自動CREATEはトースト非表示 *//* 開いた時点でCREATE済み状態に */
 </script>
 </body>
 </html>
