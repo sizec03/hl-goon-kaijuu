@@ -64,6 +64,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   /* per-character lead motion */
   .ch{display:inline-block;transform-origin:50% 50%;will-change:transform}
   .ch>i{display:inline-block;font-style:normal;transform-origin:50% 100%;will-change:transform}
+  /* 青ボックス（白文字×青背景）— 1文字ごと */
+  .hl{display:inline;background:var(--accent);color:#fff;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:.1em .16em}
+  /* 遊び方 */
+  .howto{margin-top:30px;display:flex;flex-direction:column;gap:16px;align-items:center;max-width:92vw}
+  .howrow{display:flex;flex-direction:column;align-items:center;gap:7px}
+  .howtag{display:inline-block;border:1.5px solid var(--accent);color:var(--accent);font:600 11px/1 var(--mono);letter-spacing:.18em;padding:5px 12px}
+  .howdesc{font:400 9px/1.85 var(--sans);letter-spacing:.02em;color:var(--sub);text-align:center}
 
   /* center 16:9 : B&W coarse-pixel HL clip */
   .ref{display:inline-flex;background:none;border:0;cursor:pointer;padding:0}
@@ -117,7 +124,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     from{transform:translate(-50%,calc(-1 * var(--slot)))}
     to  {transform:translate(-50%,calc( 3 * var(--slot)))}
   }
-  .top,.stage,.foot{position:relative;z-index:2}
+  .stage,.foot{position:relative;z-index:2}
+  .top{position:absolute;top:0;left:0;z-index:3}
   @media(prefers-reduced-motion:reduce){.kaiju{display:none}}
 </style>
 </head>
@@ -137,8 +145,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   <main class="stage">
     <div class="center">
       <div class="lead">
-        <div class="l1">GOON! KAIJUU<br>HEAVY METAL OCEANS</div>
-        <div class="l2">Lyric Video Generator</div>
+        <div class="l1"><span class="hl">GOON! KAIJUU<br>HEAVY METAL OCEANS</span></div>
+        <div class="l2"><span class="hl">Lyric Video Generator</span></div>
       </div>
 
       <button class="ref" id="ref" aria-label="LYRIC へ進む">
@@ -147,7 +155,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         </span>
       </button>
 
-      <p class="statement">ニンゲンに唯一無二のMVを<br>つくらせないぞ。<br>そんな、彼らの「ニンゲンに立ち向かう。」<br>魂をもとに<br>ヘドバンする歌詞で<br>リリックビデオジェネレーターができました。<br>これで、あなただけのMVを。</p>
+      <p class="statement"><span class="hl">ニンゲンにMVを つくらせない。<br>彼らのニンゲンに立ち向かう。<br>魂をもとに<br>歌詞がヘッドバンキングする<br>リリックビデオジェネレーターができました。<br>これで、あなただけのMVを。</span></p>
+      <div class="howto">
+        <div class="howrow"><span class="howtag">MOVIE</span><div class="howdesc">GOON! KAIJUUのMOVIEをつくる<br>LYRICをつなげて、MOVIEを調整可能。</div></div>
+        <div class="howrow"><span class="howtag">LYRIC</span><div class="howdesc">歌詞がヘッドバンキングするLYRICをつくる<br>各種パラメータでLYRICを調整可能。</div></div>
+      </div>
     </div>
   </main>
 
@@ -196,9 +208,9 @@ const DEST = "app.html";
         }
       }
     }
-    wrapEl(lead.querySelector(".l1"), false);
-    wrapEl(lead.querySelector(".l2"), false);
-    wrapEl(document.querySelector(".statement"), true);    // ステートメントもヘッドバン（控えめ）
+    /* headbang wrap 無効 */
+    /* headbang wrap 無効 */
+    /* headbang wrap 無効 */    // ステートメントもヘッドバン（控えめ）
   })();
   const sh=ph=>{const s=Math.sin(ph);return Math.sign(s)*Math.pow(Math.abs(s),0.7);}; // easing "ease"
   function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}

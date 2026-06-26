@@ -1506,8 +1506,7 @@ function loop(now){render(now);requestAnimationFrame(loop);}requestAnimationFram
    UI
 ========================================================================= */
 const $=id=>document.getElementById(id);
-function note(m){const t=$("note");t.textContent=m;t.classList.add("show");
-  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1500);}
+function note(m){/* 下部の実行内容トーストは非表示にする */}
 
 const MICON={
  bangA:'<path d="M11 9H4"/><path d="M7 6 4 9l3 3"/><path d="M13 15h7"/><path d="M17 12l3 3-3 3"/>',
