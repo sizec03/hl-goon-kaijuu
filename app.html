@@ -104,8 +104,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   body.mode-mv .stage{background:#18181e}
   body.mode-mv .modebtn.on{color:var(--accent)}
   body.mode-mv .grp{display:none}
-  body.mode-mv #secScene,body.mode-mv #secLofi{display:block}
-  .mode-mv #secLofi{grid-column:1 / span 2;order:4;background:var(--sheet);padding:55px 16px 16px}
+  body.mode-mv #secScene{display:block}
+  .mode-mv #secLofi{display:none}
   body.mode-mv .g-only{display:none}
   body.mode-live .m-only{display:none}
 
@@ -1621,16 +1621,10 @@ tog("shatterTog",()=>!!cur().shatter,v=>cur().shatter=v);
 ["blurTog"].forEach(id=>{const _p=$(id).onclick;$(id).onclick=e=>{_p&&_p(e);setSecDim();updateSubUsed();};});
 
 /* mode switch: HUMAN(live/白) / SCENE(mv/青) */
-/* LO-FI 配置：LYRIC=パネル内(SPACE下) / MOVIE=TIMELINEの下 */
-const _lofiEl=$("secLofi"), _lofiHomeParent=_lofiEl&&_lofiEl.parentNode, _lofiHomeNext=_lofiEl&&_lofiEl.nextSibling, _appEl=document.querySelector(".app");
-function placeLofi(m){ if(!_lofiEl||!_appEl)return;
-  if(m==="mv"){ _appEl.appendChild(_lofiEl); }
-  else if(_lofiHomeParent){ _lofiHomeParent.insertBefore(_lofiEl,_lofiHomeNext); } }
 function setMode(m){S.mode=m;
   document.body.classList.toggle("mode-mv",m==="mv");
   document.body.classList.toggle("mode-live",m==="live");
   $("modeSwitch").querySelectorAll("[data-mode]").forEach(s=>s.classList.toggle("on",s.dataset.mode===m));
-  placeLofi(m);
   renderCards();renderTimeline();
   if(m==="mv"&&!tlUserZoomed)requestAnimationFrame(fitZoom50);
   if(m==="live"&&S.lyric){S.lyric.on=false;}}
