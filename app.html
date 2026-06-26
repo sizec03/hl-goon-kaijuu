@@ -1464,7 +1464,7 @@ function drawBandText(W,H,t,F,time,txCol){
 }
 let _credPrevIdx=null,_credAnim=null;
 function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
-  const W=cv.width,H=cv.height,t=F.thick,col=FRAME_COLORS[((F.colIdx%FRAME_COLORS.length)+FRAME_COLORS.length)%FRAME_COLORS.length];
+  const W=cv.width,H=cv.height,t=F.thick*(H/720),col=FRAME_COLORS[((F.colIdx%FRAME_COLORS.length)+FRAME_COLORS.length)%FRAME_COLORS.length];
   const _band=cvActive()?"#000000":col;
   ctx.save();
   ctx.fillStyle=_band;ctx.beginPath();ctx.rect(0,0,W,H);ctx.rect(t,t,W-2*t,H-2*t);ctx.fill("evenodd");
