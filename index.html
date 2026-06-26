@@ -55,8 +55,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   /* lead + 16:9 + statement を縦のセンターにまとめて配置 */
   .center{display:flex;flex-direction:column;align-items:center}
   .lead{margin-bottom:40px;width:max-content;max-width:92vw}
-  .lead .l1{font:500 15px/1.6 var(--sans);letter-spacing:.04em;color:var(--ink)}
-  .lead .l2{margin-top:11px;font:400 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--sub)}
+  .lead .l1{font:500 15px/1.6 var(--sans);letter-spacing:0;color:var(--ink)}
+  .lead .l2{margin-top:11px;font:400 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sub)}
   /* statement under the 16:9, centered, small, same color as Lyric Video Generator */
   .statement{margin-top:26px;
     width:max-content;max-width:92vw;font:400 9px/1.95 var(--sans);letter-spacing:.02em;
@@ -101,6 +101,12 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #wipeB{background:var(--accent);transform-origin:bottom;z-index:31}  /* 青：下→上（黒の後） */
   #wipeK.run{animation:fillY .42s cubic-bezier(.6,0,.25,1) forwards}
   #wipeB.run{animation:fillYb .42s cubic-bezier(.6,0,.25,1) forwards}
+  #warn{position:fixed;inset:0;z-index:32;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .28s ease}
+  #warn.show{opacity:1}
+  #warn .warn-in{color:#fff;max-width:min(86vw,520px)}
+  #warn .warn-lab{font:600 11px/1 var(--mono);letter-spacing:.34em;text-transform:uppercase;margin-bottom:12px;opacity:1}
+  #warn .warn-t{font:400 9px/1.85 var(--sans);letter-spacing:.02em;margin:0 0 4px}
+  #warn .warn-s{font:400 9px/1.85 var(--sans);letter-spacing:.02em;margin:0;opacity:1}
   @keyframes fillY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
   @keyframes fillYb{from{transform:scaleY(0)}to{transform:scaleY(1)}}  /* 青も全面（最初の状態） */
   @media(prefers-reduced-motion:reduce){#wipeK.run,#wipeB.run{animation-duration:.01s}}
@@ -153,9 +159,9 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         </span>
       </button>
 
-      <p class="statement"><span class="hl">ニンゲンにMVを つくらせない。<br>彼らのニンゲンに立ち向かう。<br>魂をもとに<br>歌詞がヘッドバンキングする<br>リリックビデオジェネレーターができました。<br>これで、あなただけのMVを。</span></p>
+      <p class="statement"><span class="hl">ニンゲンにMVをつくらせない<br>「ニンゲンに立ち向かう」<br>彼らの魂をもとに<br>歌詞がヘッドバンキングする<br>リリックビデオジェネレーターができました<br>これで、あなただけのMVを</span></p>
       <div class="howto">
-        <div class="howrow"><span class="howtag">MOVIE</span><div class="howdesc"><span class="hl">LYRICをつなげて、<br>GOON! KAIJUUのMOVIEをつくる</span></div></div>
+        <div class="howrow"><span class="howtag">MOVIE</span><div class="howdesc"><span class="hl">LYRICをつなげて<br>GOON! KAIJUUのMOVIEをつくる</span></div></div>
         <div class="howrow"><span class="howtag">LYRIC</span><div class="howdesc"><span class="hl">歌詞がヘッドバンキングする<br>LYRICをつくる</span></div></div>
       </div>
     </div>
@@ -165,6 +171,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
 
   <div id="wipeK"></div>
   <div id="wipeB"></div>
+  <div id="warn" aria-hidden="true"><div class="warn-in"><div class="warn-lab">CAUTION</div><p class="warn-t">この先、激しく点滅する映像が流れます</p><p class="warn-s">光の刺激にご注意ください</p></div></div>
 
 <script>
 /* START / center click -> DEST. 完成版の生成アプリができたら DEST を差し替え。 */
@@ -260,10 +267,11 @@ const DEST = "app.html";
   document.addEventListener("visibilitychange",()=>{ if(!document.hidden) tryPlay(); });
 
   function enter(){
-    const BK = reduce?10:420, BL = reduce?10:420;
+    const warn = document.getElementById("warn");
+    const BK = reduce?10:420, HOLD = reduce?1200:2200;
     wipeK.classList.remove("run");void wipeK.offsetWidth;wipeK.classList.add("run");           // 黒：上→下
-    setTimeout(()=>{ wipeB.classList.remove("run");void wipeB.offsetWidth;wipeB.classList.add("run"); }, BK); // 全面黒の後、青：下→上
-    setTimeout(()=>{ location.href = DEST; }, BK+BL);
+    setTimeout(()=>{ wipeB.classList.remove("run");void wipeB.offsetWidth;wipeB.classList.add("run"); if(warn)warn.classList.add("show"); }, BK); // 青の全面表示と同時に注意文を中央表示
+    setTimeout(()=>{ location.href = DEST; }, BK+HOLD); // 注意文を読む時間をとってから遷移
   }
   ref.addEventListener("click",enter);
 })();
