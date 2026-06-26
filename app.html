@@ -21,6 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=UnifrakturCook:wght@700&family=Pirata+One&family=Rubik+Glitch&family=Boldonse&family=New+Rocker&family=Megrim&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Sans+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <title>H L — Headbanging Lyrics by HEAVY METAL OCEANS</title>
 <meta name="description" content="ヘドバンする歌詞で、MVをつくる。
 HL(Headbanging Lyrics)_Lyric Video Generator">
@@ -43,8 +44,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     --paper:#E7E7E1; --sheet:#F1F1EC; --stage:#0e0e11;
     --ink:#191a1d; --sub:#74746d; --faint:#9a9a92; --hair:#d2d2cb; --hair2:#e1e1da;
     --accent:#0000ff;            /* 強調 — 最小限に */
-    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
-    --sans:"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+    --mono:"Noto Sans Mono","Noto Sans JP",monospace;
+    --sans:"Noto Sans","Noto Sans JP",sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);font:400 13px/1.5 var(--sans)}
@@ -195,7 +196,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #btnShareMv:hover{background:var(--accent);color:#fff}
   #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:none;
     align-items:center;background:#0d0d10;border:1px solid var(--accent);color:#fff;
-    font:600 12px/1 ui-monospace,monospace;letter-spacing:.12em;padding:9px 16px;border-radius:22px;
+    font:600 12px/1 var(--mono);letter-spacing:.12em;padding:9px 16px;border-radius:22px;
     box-shadow:0 6px 22px rgba(0,0,0,.45)}
   #recStatus.on{display:flex}
   #recStatus::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;
@@ -326,6 +327,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .tledit .nudge{border:1px solid var(--hair);padding:6px 9px;font:500 10px/1 var(--mono);cursor:pointer;color:var(--ink);user-select:none}
   .tledit .nudge:hover{border-color:var(--ink)}
   #modeSwitch.exporting [data-mode="live"]{opacity:.22;pointer-events:none}
+  .tl-grp{display:contents}
+  @media (max-width:940px){
+    .tlbar-head .tl-grp{display:flex;align-items:center;gap:7px;flex:0 0 100%;width:100%;flex-wrap:wrap}
+    .tlbar-head .tl-off .tl-off-lbl{flex:0 0 100%;margin:0 0 2px!important}
+    .tlbar-head .tl-off .zoomn{flex:1 1 0;text-align:center;padding:7px 0}
+    .tlbar-head .tl-del .btn{flex:1 1 0!important;width:auto!important}
+  }
 </style>
 </head>
 <body class="mode-mv">
@@ -354,8 +362,9 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     </div>
     <div class="m-only" id="movieHead">
       <button class="btn fill" id="btnCreate" style="width:100%;margin-top:14px;padding:13px 8px;font-size:13px;letter-spacing:.04em">CREATE</button>
-      <div class="row" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%">
-        <button class="btn" id="btnPreviewMv" title="再生／停止" style="flex:1">▶</button>
+      <div class="row" style="margin-top:8px;display:flex;align-items:center;gap:8px;width:100%">
+        <button class="btn" id="btnPreviewMv" title="再生／停止" style="flex:0 0 auto;min-width:46px">▶</button>
+        <select id="mvQual" style="flex:1"><option value="small">Small（480p）</option><option value="normal" selected>Normal（720p）</option><option value="high">High（1080p）</option></select>
         <button class="btn" id="btnShareMv" title="タイムラインのLYRICと音源を書き出す" style="flex:1">SHARE</button>
       </div>
       <div class="transport mvtrans" id="mvTrans" style="margin-top:9px">
@@ -1364,7 +1373,7 @@ function applyLofi(){const L=S.lofi;if(!L||!L.on)return;
     for(let y=-oy;y<H;y+=th)for(let x=-ox;x<W;x+=tw)ctx.drawImage(_noiseTile,0,0,256,256,x,y,tw,th);
     ctx.restore();ctx.imageSmoothingEnabled=true;}}
 function render(now){
-  let time=S.playing?(now-t0)/1000:freezeT;const _rawTime=time;
+  let time=masterTime();const _rawTime=time;   /* 音と同期: 再生中は audio.currentTime を時計に使う(クリップ選択lyricTickと一致) */
   lyricTick();
   if((_sectFX()||(S.lofi&&S.lofi.all&&S.mode==="mv"))&&S.fps&&S.fps.on&&S.fps.rate>0)time=Math.floor(time*S.fps.rate)/S.fps.rate;
   const W=cv.width,H=cv.height;
@@ -1505,7 +1514,9 @@ function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
   if(_credAnim&&(performance.now()-_credAnim.start)>=_DUR)_credAnim=null;
 }
 function frameSwitchColor(){if(S.frame)S.frame.colIdx++;}
-function loop(now){render(now);requestAnimationFrame(loop);}requestAnimationFrame(loop);
+const _isTouch=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||("ontouchstart" in window);let _lastFrame=0;
+function _lofiActiveNow(){return !!(S.lofi&&S.lofi.on&&(_sectFX()||(S.lofi.all&&S.mode==="mv")));}
+function loop(now){const cap=(_isTouch&&_lofiActiveNow())?33.34:0;if(cap&&now-_lastFrame<cap){requestAnimationFrame(loop);return;}_lastFrame=now;render(now);requestAnimationFrame(loop);}requestAnimationFrame(loop);
 
 /* =========================================================================
    UI
@@ -2476,13 +2487,14 @@ function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
 function recordMV(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   if(!audioReady()){note("楽曲を準備中です。少し待ってからお試しください");return;}
   ensureAudioGraph();audioCtx.resume();
+  const _q=($("mvQual")&&$("mvQual").value)||"normal";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};   /* 書き出し解像度 Normal=1280x720 / High=1920x1080 */
   const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");   /* 書き出し中はLYRICへ切替不可・減光 */
   S.lyric.on=true;lyricActive=-1;setPlayBtn(true);
   audio.currentTime=0;
-  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");note("この環境では書き出せません。PCのChrome等で開いてください");});
+  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");_restoreRes();note("この環境では書き出せません。PCのChrome等で開いてください");});
   startRec(true);
-  audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");};
-  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}if(_ms)_ms.classList.remove("exporting");note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
+  audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");_restoreRes();};
+  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}if(_ms)_ms.classList.remove("exporting");_restoreRes();note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
   note("SHARE：MV書き出し開始（約2:47・曲の終わりで自動保存）");}
 
 /* ===== .hmofont ===== */
