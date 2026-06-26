@@ -105,6 +105,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   body.mode-mv .modebtn.on{color:var(--accent)}
   body.mode-mv .grp{display:none}
   body.mode-mv #secScene,body.mode-mv #secLofi{display:block}
+  .mode-mv #secLofi{grid-column:1 / span 2;order:4;background:var(--sheet);padding:55px 16px 16px}
   body.mode-mv .g-only{display:none}
   body.mode-live .m-only{display:none}
 
@@ -210,7 +211,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .sw{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--hair2);position:relative}
   .sw.unused .lab,.sw.unused input.hex{opacity:.3}
   .sw.unused::after{content:"";position:absolute;left:0;top:7px;width:34px;height:24px;pointer-events:none;
-    background:linear-gradient(to top right,transparent 45%,var(--sub) 47%,var(--sub) 53%,transparent 55%)}
+    background:linear-gradient(to top right,transparent calc(50% - 0.5px),var(--ink) calc(50% - 0.5px),var(--ink) calc(50% + 0.5px),transparent calc(50% + 0.5px))}
   .sw .chip{-webkit-appearance:none;appearance:none;width:34px;height:24px;border:1px solid var(--ink);
     padding:0;cursor:pointer;flex:none;background:none;border-radius:0}
   .sw .chip::-webkit-color-swatch-wrapper{padding:0}
@@ -324,6 +325,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .tledit .tlsel{font:500 10px/1 var(--mono);color:var(--sub);margin-right:4px}
   .tledit .nudge{border:1px solid var(--hair);padding:6px 9px;font:500 10px/1 var(--mono);cursor:pointer;color:var(--ink);user-select:none}
   .tledit .nudge:hover{border-color:var(--ink)}
+  #modeSwitch.exporting [data-mode="live"]{opacity:.22;pointer-events:none}
 </style>
 </head>
 <body class="mode-mv">
@@ -346,8 +348,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn fill" id="btnRemix" style="padding:13px 8px;font-size:13px;letter-spacing:.16em">REMIX</button>
       </div>
       <div class="row g2" id="transRow" style="margin-top:8px">
-        <button class="btn" id="btnPlay">PLAY</button>
-        <button class="btn" id="btnStockLyric" title="現在のLYRICを素材として保存">STOCK</button>
+        <button class="btn" id="btnPlay">▶</button>
+        <button class="btn acc" id="btnStockLyric" title="現在のLYRICを素材として保存">STOCK</button>
       </div>
     </div>
     <div class="m-only" id="movieHead">
@@ -365,20 +367,6 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
 
   <!-- ══════════════════  CONTROLS · left panel  ══════════════════ -->
   <aside class="panel">
-
-    <!-- LO-FI — 低解像度＋ノイズ -->
-    <section class="grp" id="secLofi" style="display:none">
-      <div class="gh"><span class="lab"></span><span class="ln"></span></div>
-      <div class="tog on" id="lofiTog"><span class="box"></span>低解像度＋ノイズ</div>
-      <div class="tog on" id="lofiAllTog"><span class="box"></span>全クリップに適用</div>
-      <label class="f"><span class="k">pixel 粗さ</span><span class="v" id="lofiPixV">3</span></label>
-      <input type="range" id="lofiPix" min="1" max="16" step="1" value="3">
-      <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">0.15</span></label>
-      <input type="range" id="lofiNoise" min="0" max="0.6" step="0.01" value="0.15">
-      <div class="tog on" id="fpsTog"><span class="box"></span>コマ落とし</div>
-      <label class="f"><span class="k">fps コマ数</span><span class="v" id="fpsRateV">28</span></label>
-      <input type="range" id="fpsRate" min="2" max="30" step="1" value="28">
-    </section>
 
     <!-- WORD — text, spacing & line transform -->
     <section class="grp">
@@ -472,9 +460,9 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <section class="grp">
       <div class="gh"><span class="lab">COLOR</span><span class="ln"></span></div>
       <select id="colorVar" style="margin-bottom:8px"><option value="0" selected>COLOR：Base</option><option value="2">COLOR：Opposite</option></select>
-      <select id="colmode"><option value="solid">flat</option>
-        <option value="grad">gradation</option>
-        <option value="chrome" selected>chrome</option></select>
+      <select id="colmode"><option value="solid">FLAT</option>
+        <option value="grad">GRADATION</option>
+        <option value="chrome" selected>CHROME</option></select>
       <div style="margin-top:10px">
         <div class="sw"><input type="color" class="chip" id="fg"><span class="lab">Main</span>
           <input class="hex" id="fgHex"></div>
@@ -543,6 +531,20 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <input type="range" id="blur" min="0" max="24" value="4">
       </div>
       
+    </section>
+
+    <!-- LO-FI — 低解像度＋ノイズ -->
+    <section class="grp" id="secLofi">
+      <div class="gh"><span class="lab">LO-FI</span><span class="ln"></span></div>
+      <div class="tog on" id="lofiTog"><span class="box"></span>低解像度＋ノイズ</div>
+      <div class="tog on" id="lofiAllTog"><span class="box"></span>全クリップに適用</div>
+      <label class="f"><span class="k">pixel 粗さ</span><span class="v" id="lofiPixV">3</span></label>
+      <input type="range" id="lofiPix" min="1" max="16" step="1" value="3">
+      <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">0.15</span></label>
+      <input type="range" id="lofiNoise" min="0" max="0.6" step="0.01" value="0.15">
+      <div class="tog on" id="fpsTog"><span class="box"></span>コマ落とし</div>
+      <label class="f"><span class="k">fps コマ数</span><span class="v" id="fpsRateV">28</span></label>
+      <input type="range" id="fpsRate" min="2" max="30" step="1" value="28">
     </section>
 
     <!-- FRAME — live frame & credits -->
@@ -626,7 +628,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   </section>
   <div class="tlbar m-only" id="tlbar">
     <div class="tlbar-head">
-      <span class="tlbar-title">TIMELINE</span><span class="v" id="tlInfo">0本</span>
+      <span class="tlbar-title">TIMELINE</span>
       <div class="tledit" id="tledit" style="display:none">
         <span class="tlsel" id="tlSel">—</span>
         <span class="nudge" data-d="-0.1">−0.1s</span>
@@ -1453,7 +1455,7 @@ function drawBandText(W,H,t,F,time,txCol){
   ctx.textAlign="center";ctx.textBaseline="alphabetic";
   const _fm=ctx.measureText("PANDA");
   const cy=(typeof _fm.actualBoundingBoxAscent==="number")?((_fm.actualBoundingBoxAscent-_fm.actualBoundingBoxDescent)/2):(fs*0.34);
-  const off=-(time||0)*(F.speed||0)*150*(F.dir||1);
+  const off=-(performance.now()/1000)*(F.speed||0)*150*(F.dir||1);  /* 帯マーキーは再生状態に依らず常に流す */
   const ptAt=(s)=>{s=((s%P)+P)%P;
     if(s<Wc)return[m+s,m,0];
     s-=Wc; if(s<Hc)return[W-m,m+s,Math.PI/2];
@@ -1619,15 +1621,21 @@ tog("shatterTog",()=>!!cur().shatter,v=>cur().shatter=v);
 ["blurTog"].forEach(id=>{const _p=$(id).onclick;$(id).onclick=e=>{_p&&_p(e);setSecDim();updateSubUsed();};});
 
 /* mode switch: HUMAN(live/白) / SCENE(mv/青) */
+/* LO-FI 配置：LYRIC=パネル内(SPACE下) / MOVIE=TIMELINEの下 */
+const _lofiEl=$("secLofi"), _lofiHomeParent=_lofiEl&&_lofiEl.parentNode, _lofiHomeNext=_lofiEl&&_lofiEl.nextSibling, _appEl=document.querySelector(".app");
+function placeLofi(m){ if(!_lofiEl||!_appEl)return;
+  if(m==="mv"){ _appEl.appendChild(_lofiEl); }
+  else if(_lofiHomeParent){ _lofiHomeParent.insertBefore(_lofiEl,_lofiHomeNext); } }
 function setMode(m){S.mode=m;
   document.body.classList.toggle("mode-mv",m==="mv");
   document.body.classList.toggle("mode-live",m==="live");
   $("modeSwitch").querySelectorAll("[data-mode]").forEach(s=>s.classList.toggle("on",s.dataset.mode===m));
+  placeLofi(m);
   renderCards();renderTimeline();
   if(m==="mv"&&!tlUserZoomed)requestAnimationFrame(fitZoom50);
   if(m==="live"&&S.lyric){S.lyric.on=false;}}
 window.addEventListener("resize",()=>{if(S.mode==="mv"&&!tlUserZoomed)fitZoom50();});
-$("modeSwitch").querySelectorAll("[data-mode]").forEach(sp=>sp.onclick=()=>setMode(sp.dataset.mode));
+$("modeSwitch").querySelectorAll("[data-mode]").forEach(sp=>sp.onclick=()=>{if(sp.dataset.mode==="live"&&mediaRec&&mediaRec.state==="recording")return;setMode(sp.dataset.mode);});
 /* SP: pin header + generated screen by measuring header height */
 function fitBrand(){const b=document.querySelector(".brand");if(!b)return;
   if(window.matchMedia("(max-width:940px)").matches)document.documentElement.style.setProperty("--brandH",b.offsetHeight+"px");
@@ -1647,7 +1655,7 @@ swatch("bgHex","bg",()=>S.bg,v=>S.bg=v);
 
 /* transport buttons */
 $("btnPlay").onclick=()=>{if(S.playing){freezeT=(performance.now()-t0)/1000;S.playing=false;}
-  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"STOP":"PLAY";};
+  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"■":"▶";};
 
 /* ===== recording (video only, no audio) ===== */
 let mediaRec=null,recChunks=[];
@@ -2083,6 +2091,13 @@ $("btnImpClose").onclick=()=>{if($("impPanel"))$("impPanel").style.display="none
   function end(e){if(!drag)return;drag=false;try{grip.releasePointerCapture(e.pointerId);}catch(_){}}
   grip.addEventListener("pointerup",end);
   grip.addEventListener("pointercancel",end);
+  /* タイムライン上をドラッグ/タップ → 青線がそこへ移動しプレビュー同期（スクラブ） */
+  const _tw=$("tlwrap");
+  if(_tw){ let _pdrag=false; const _pa=new Set();
+    _tw.addEventListener("pointerdown",e=>{ if(e.target&&e.target.closest&&e.target.closest(".tlgrip"))return; _pa.add(e.pointerId); if(_pa.size>1){_pdrag=false;return;} _pdrag=true; try{_tw.setPointerCapture(e.pointerId);}catch(_){} seekAt(e.clientX); });
+    _tw.addEventListener("pointermove",e=>{ if(!_pdrag||_pa.size>1)return; seekAt(e.clientX); });
+    const _pe=e=>{ _pa.delete(e.pointerId); if(_pa.size===0)_pdrag=false; try{_tw.releasePointerCapture(e.pointerId);}catch(_){} };
+    _tw.addEventListener("pointerup",_pe); _tw.addEventListener("pointercancel",_pe); }
 })();
 $("tlZoomIn").onclick=()=>setZoom(tlPx*1.4);
 $("tlZoomOut").onclick=()=>setZoom(tlPx/1.4);
@@ -2467,12 +2482,13 @@ function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
 function recordMV(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   if(!audioReady()){note("楽曲を準備中です。少し待ってからお試しください");return;}
   ensureAudioGraph();audioCtx.resume();
+  const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");   /* 書き出し中はLYRICへ切替不可・減光 */
   S.lyric.on=true;lyricActive=-1;setPlayBtn(true);
   audio.currentTime=0;
-  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>note("この環境では書き出せません。PCのChrome等で開いてください"));
+  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");note("この環境では書き出せません。PCのChrome等で開いてください");});
   startRec(true);
-  audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);};
-  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
+  audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");};
+  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}if(_ms)_ms.classList.remove("exporting");note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
   note("SHARE：MV書き出し開始（約2:47・曲の終わりで自動保存）");}
 
 /* ===== .hmofont ===== */
