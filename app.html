@@ -22,6 +22,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=UnifrakturCook:wght@700&family=Pirata+One&family=Rubik+Glitch&family=Boldonse&family=New+Rocker&family=Megrim&display=swap" rel="stylesheet">
 <title>H L — Headbanging Lyrics by HEAVY METAL OCEANS</title>
+<meta name="description" content="ヘドバンする歌詞で、MVをつくる。
+HL(Headbanging Lyrics)_Lyric Video Generator">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HEADBANGING LYRICS">
+<meta property="og:title" content="H L — Headbanging Lyrics｜HEAVY METAL OCEANS">
+<meta property="og:description" content="ヘドバンする歌詞で、MVをつくる。
+HL(Headbanging Lyrics)_Lyric Video Generator">
+<meta property="og:url" content="https://headbanginglyrics.com/app.html">
+<meta property="og:image" content="https://headbanginglyrics.com/ogp.png">
+<meta property="og:image:width" content="768">
+<meta property="og:image:height" content="432">
+<meta name="twitter:image" content="https://headbanginglyrics.com/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="H L — Headbanging Lyrics｜HEAVY METAL OCEANS">
+<meta name="twitter:description" content="ヘドバンする歌詞で、MVをつくる。
+HL(Headbanging Lyrics)_Lyric Video Generator">
 <style>
   :root{
     --paper:#E7E7E1; --sheet:#F1F1EC; --stage:#0e0e11;
@@ -215,7 +231,7 @@
     cursor:pointer;min-height:52px;display:flex;flex-direction:column;justify-content:center;gap:3px;overflow:hidden;transition:.1s}
   body.mode-mv .clip{background:rgba(255,255,255,.05);border:none}
   .clip:hover{border-color:var(--ink)}
-  .clip .bar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+  .clip .bar{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sub)}
   .clip .cnum{font:500 8px/1 var(--mono);color:var(--sub);letter-spacing:.14em}
   .clip .cnm{font:700 12px/1.15 var(--sans);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .clip .cpat{font:400 8.5px/1 var(--mono);color:var(--sub);letter-spacing:.06em}
@@ -309,7 +325,7 @@
   .tledit .nudge:hover{border-color:var(--ink)}
 </style>
 </head>
-<body>
+<body class="mode-mv">
 <div class="app">
   <div class="brand">
     <div class="brandrow">
@@ -331,14 +347,14 @@
       <div class="row g3" id="transRow" style="margin-top:8px">
         <button class="btn" id="btnShareLink" title="共有リンクをコピー">SHARE</button>
         <button class="btn" id="btnPlay">STOP</button>
-        <button class="btn acc" id="btnRec"><span class="recpill" id="recPill"><span class="dot"></span>CLIP</span></button>
+        <button class="btn acc" id="btnRec"><span class="recpill" id="recPill"><span class="dot"></span>LYRIC</span></button>
       </div>
     </div>
     <div class="m-only" id="movieHead">
       <button class="btn fill" id="btnCreate" style="width:100%;margin-top:14px;padding:13px 8px;font-size:13px;letter-spacing:.18em">CREATE</button>
       <div class="row" style="margin-top:8px;display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%">
         <button class="btn" id="btnPreviewMv" title="再生／停止" style="flex:1">▶</button>
-        <button class="btn" id="btnShareMv" title="タイムラインのCLIPと音源を書き出す" style="flex:1">SHARE</button>
+        <button class="btn" id="btnShareMv" title="タイムラインのLYRICと音源を書き出す" style="flex:1">SHARE</button>
       </div>
       <div class="transport mvtrans" id="mvTrans" style="margin-top:9px">
         <input type="range" id="mvScrub" min="0" max="1000" value="0">
@@ -533,7 +549,7 @@
     <!-- TRANSITION — scene cut transitions (GRAPHIC mode) -->
     <!-- SETLIST — audio, segments & MV record -->
     <section class="grp" id="secScene">
-      <div class="gh"><span class="lab">CLIP</span><span class="ln"></span></div>
+      <div class="gh"><span class="lab">LYRIC STOCK</span><span class="ln"></span></div>
 
       <div id="recStatus"></div>
       <audio id="audio" preload="auto" playsinline></audio>
@@ -551,7 +567,7 @@
       </div>
       </div>
 
-      <label class="f" style="margin-top:14px"><span class="k">CLIP 素材ストック</span></label>
+      <label class="f" style="margin-top:14px"><span class="k">LYRIC 素材ストック</span></label>
       <div class="cards" id="cards"></div>
       <div class="m-only">
       <div id="impPanel" style="display:none;margin-top:8px;border:1px solid var(--hair);padding:11px">
@@ -628,7 +644,7 @@
       <span class="zoomn" id="ofM">−0.1</span>
       <span class="zoomn" id="ofP">＋0.1</span>
       <span class="zoomn" id="ofPP">＋0.5</span>
-      <button class="btn tlbar-clear" id="btnTlClear">DELETE</button>
+      <button class="btn tlbar-clear" id="btnTlDelOne" style="width:84px">DELETE</button><button class="btn tlbar-clear" id="btnTlClear">ALL DELETE</button>
     </div>
     <div class="tlwrap" id="tlwrap">
       <div class="tltrack" id="tltrack">
@@ -961,6 +977,8 @@ THE SILENT SEA`;
    RENDER
 ========================================================================= */
 const cv=document.getElementById("view"),ctx=cv.getContext("2d");
+/* perf: モバイル/タブレットのみ実解像度を下げ毎フレームの画素処理を削減（16:9維持・PCは1280x720のまま） */
+(function(){try{var _coarse=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||("ontouchstart" in window);var _min=Math.min(screen.width||9999,screen.height||9999);if(_coarse){if(_min<=480){cv.width=854;cv.height=480;}else{cv.width=960;cv.height=540;}}}catch(e){}})();
 let t0=performance.now(),freezeT=0;
 
 function shaped(e,ph){let s=Math.sin(ph);
@@ -1370,21 +1388,21 @@ function render(now){
     const _tc=_tile.getContext("2d");
     _tc.setTransform(1,0,0,1,0,0);_tc.clearRect(0,0,W,H);
     for(let i=S.layers.length-1;i>=0;i--)renderLayer(S.layers[i],time,W,H,skel,_tc);   /* 焼きは1回 */
-    let _sx=0,_casc=null,_mt=masterTime();
+    let _sx=0,_casc=null,_mt=masterTime();const _rel=_mt-_clipActiveMT;
     if(S.scatter.scroll){const _sc=S.scatter.scroll,_d=Math.max(0.1,_sc.end-_sc.start);
       if(_sc.cascade){_casc=_sc;}
       else{let _p;
         if(_sc.clipRel){const _cs=(lyricActive>=0&&S.timeline[lyricActive])?S.timeline[lyricActive].start:0;
           const _ce=(S.timeline[lyricActive+1])?S.timeline[lyricActive+1].start:(_cs+3);
           _p=(_mt-_cs)/Math.max(0.1,_ce-_cs);}   /* MOVE: クリップ尺で sweep */
-        else{_p=(_mt-_sc.start)/_d;}
+        else{_p=_rel/_d;}
         _p=_p<0?0:_p>1?1:_p;const _e=_scrollEase(_p);_sx=((_sc.x0!=null?_sc.x0:-2.6)+_e*((_sc.x1!=null?_sc.x1:0.8)-(_sc.x0!=null?_sc.x0:-2.6)))*W;}}
     for(const _it of S.scatter.items){
       let _ix=_it.x*W+_sx,_iy=_it.y*H;
       if(_casc){const _t0=(_it.t0!=null?_it.t0:_casc.start+(_it.d||0)*(_casc.stagger!=null?_casc.stagger:1.2));
         const _du=Math.max(0.1,_it.mdur!=null?_it.mdur:(_casc.dur!=null?_casc.dur:1.0));
         const _tx=(_it.tx!=null?_it.tx:(_casc.x1!=null?_casc.x1:-2.4));
-        let _p=(_mt-_t0)/_du;_p=_p<0?0:_p>1?1:_p;
+        let _p=(_rel-(_t0-_casc.start))/_du;_p=_p<0?0:_p>1?1:_p;
         _ix=(_it.x+_dispKire(_p,_tx))*W;
         const _ty=(_it.ty!=null?_it.ty:0);_iy=(_it.y+_dispKire(_p,_ty))*H;}   /* per-item振付: ため→キレで移動(縦txも対応) */
       ctx.save();
@@ -1904,7 +1922,7 @@ function applySnapshot(d){const s=sanitizeSnapshot(d);if(!s)return;
   S.bg=s.bg;S.disp=s.disp;S.fx=new Set(s.fx);
   S.fxCount=s.fxCount;S.fxThick=s.fxThick;S.fxJitter=s.fxJitter;
   if(s.frame&&!S.frameLock){S.frame.on=s.frame.on;S.frame.thick=s.frame.thick;S.frame.speed=s.frame.speed;S.frame.dir=s.frame.dir;S.frame.marqSize=s.frame.marqSize;S.frame.marqCount=s.frame.marqCount;}
-  S.layers=s.layers;S.active=s.active;S.scatter=s.scatter||null;}
+  S.layers=s.layers;S.active=s.active;S.scatter=s.scatter||null;_clipActiveMT=masterTime();}
 function addSeg(name,setText){const snap=snapshot();
   const nm=((name||cur().text||"素材")+"").trim()||"素材";
   if(setText&&snap.layers[snap.active])snap.layers[snap.active].text=nm.toUpperCase();
@@ -1917,8 +1935,8 @@ function renderCards(){const box=$("cards");if(!box)return;box.innerHTML="";
   if(!S.cards.length){box.innerHTML='<div class="hint" style="grid-column:1/-1">素材がありません。GRで「素材を保存」してください。</div>';return;}
   S.cards.forEach((c,idx)=>{
     const cell=document.createElement("div");cell.className="clip";cell._card=c;
-    const bar=document.createElement("div");bar.className="bar";bar.style.background=clipColor(c);
-    const num=document.createElement("div");num.className="cnum";num.textContent="CLIP "+String(idx+1).padStart(2,"0");
+    const bar=document.createElement("div");bar.className="bar";bar.style.background="var(--sub)";
+    const num=document.createElement("div");num.className="cnum";num.textContent="LYRIC "+String(idx+1).padStart(2,"0");
     const nm=document.createElement("div");nm.className="cnm";nm.textContent=c.name||c.text;
     const pat=document.createElement("div");pat.className="cpat";pat.textContent=c.pattern||"";
     const ops=document.createElement("div");ops.className="ops";
@@ -1981,7 +1999,7 @@ $("tledit").querySelectorAll('.nudge[data-d]').forEach(b=>b.onclick=()=>{if(!tlS
   S.timeline.sort((a,b)=>a.start-b.start);renderTimeline();});
 $("tlNow").onclick=()=>{if(!tlSelItem)return;tlSelItem.start=+placeTime().toFixed(2);S.timeline.sort((a,b)=>a.start-b.start);renderTimeline();note("現在地に配置");};
 $("tlDel").onclick=()=>{if(!tlSelItem)return;const i=S.timeline.indexOf(tlSelItem);if(i>=0)S.timeline.splice(i,1);tlSelItem=null;renderTimeline();};
-$("btnTlClear").onclick=()=>{S.timeline=[];tlSelItem=null;renderTimeline();note("タイムラインを空に");};
+$("btnTlClear").onclick=()=>{S.timeline=[];tlSelItem=null;renderTimeline();note("タイムラインを空に");};$("btnTlDelOne").onclick=()=>{let _it=tlSelItem;if(!_it&&lyricActive>=0&&S.timeline[lyricActive])_it=S.timeline[lyricActive];if(!_it){note("削除する素材をクリックで選択してください");return;}const _di=S.timeline.indexOf(_it);if(_di>=0)S.timeline.splice(_di,1);if(tlSelItem===_it)tlSelItem=null;renderTimeline();note("1件削除");};
 var retime={on:false,idx:0};
 function tapShowTarget(){const n=S.timeline.length;
   if($("tapCount"))$("tapCount").textContent=Math.min(retime.idx+1,n)+" / "+n;
@@ -2136,8 +2154,8 @@ const ANALYSIS=[{t:0,w:"GAGAGAGAGAGAGAGA",n:"GAGAGAGAGAGAGAGA",g:50,o:1},
 {t:71.3,w:"KYUKYU",n:"KYUKYU",g:25},
 {t:72.84,w:"KYUKYUKYU\nKYUKYUKYU\nKYUUUUUUN",n:"KYUKYUKYU KYUKYUKYU KYUU",g:25,o:1},
 {t:75.17,w:"KYUUKYUKYUKYUU\nKYUKYUKYUU\nKYUUUUUUN",n:"KYUUKYUKYUKYUU KYUKYUKYU",g:25,o:1},
-{t:77.85,w:"KYUKYUKYU\nKYUUUN\nKYUUUUUUN",n:"KYUKYUKYU KYUUUN KYUUUUU",g:25,o:1},
-{t:82.77,w:"KYUKYUKYU\nKYUKYUKYU\nKYUUUUUUUN",n:"KYUKYUKYU KYUKYUKYU KYUU",g:25,o:1},
+{fx2:"casc063",t:77.85,w:"KYUKYUKYU\nKYUUUN\nKYUUUUUUN",n:"KYUKYUKYU KYUUUN KYUUUUU",g:25,o:1},
+{fx2:"grid065",t:82.77,w:"KYUKYUKYU\nKYUKYUKYU\nKYUUUUUUUN",n:"KYUKYUKYU KYUKYUKYU KYUU",g:25,o:1},
 {t:87.7,w:"KYU KYU KYU KYUUUN",n:"KYU KYU KYU KYUUUN",g:25,o:1},
 {t:89.61,w:"KYUUUUUUUUN",n:"KYUUUUUUUUN",g:15,o:1},
 {t:90.96,w:"HEADBANGING!",n:"HEADBANGING!"},
@@ -2197,8 +2215,8 @@ const ANALYSIS=[{t:0,w:"GAGAGAGAGAGAGAGA",n:"GAGAGAGAGAGAGAGA",g:50,o:1},
 {t:143.79,w:"GOON!",n:"GOON!"},
 {t:144.43,w:"GOON!",n:"GOON!"},
 {t:144.7,w:"KAIJUU",n:"KAIJUU"},
-{t:147.46,w:"GOOOOOOOOOON!",n:"GOOOOOOOOOON!",g:25,o:1,d:106},
-{t:152.75,w:"YEAHHHHHHH",n:"YEAHHHHHHH",g:25,o:1,d:106},
+{fx2:"pyr126",t:147.46,w:"GOOOOOOOOOON!",n:"GOOOOOOOOOON!",g:25,o:1,d:106},
+{fx2:"pyr127",t:152.75,w:"YEAHHHHHHH",n:"YEAHHHHHHH",g:25,o:1,d:106},
 {t:158.34,w:"ZA",n:"ZA",g:25,o:1},
 {t:158.66,w:"ZA",n:"ZA",g:50,o:1},
 {t:158.96,w:"ZA",n:"ZA",g:25,o:1},
@@ -2278,9 +2296,9 @@ function createMV(){
         S.layers.forEach(l=>{l.text=_w5;l.margin=_wm();l.lscale=1;l.lx=(Math.random()*2-1)*48;l.ly=(Math.random()*2-1)*70;});}
     }
     _prevBig=_big;_prevXL=_xl;
-    if(_i===62){  /* 063(064統合): ①②③の振付を単一クリップ内で完結。masterTime絶対時刻 */
+    if(seg.fx2==="casc063"){  /* 063(064統合): ①②③の振付を単一クリップ内で完結。masterTime絶対時刻 */
       S.layers.forEach(l=>{l.margin=26;l.lscale=1;l.lx=0;l.ly=0;});
-      const _T=ANALYSIS[62]?ANALYSIS[62].t:77.85;  /* 063開始(=77.85)＝振付基準時刻 */
+      const _T=seg.t;  /* 063開始(=77.85)＝振付基準時刻 */
       const _bang=2.0;                              /* ① ヘドバン保持(≈5回, speed依存で概算) */
       const _i1=_T+_bang;                           /* ① 動き出し */
       const _md1=0.75;                              /* ① 移動duration */
@@ -2296,7 +2314,7 @@ function createMV(){
         {x:1.55,y:0.50,s:1.20,r:0,t0:_i3,mdur:_md3,tx:-3.4}    /* ③ 縦120%・上下センター・右→左フルwipe(導入前) */
       ],scroll:{start:seg.t,end:_end,cascade:true}};
     }
-    if(_i===63){  /* 065(統合後index): 44セットを4.5倍幅に分散配置・末尾は右下に孤立1セット・右→左スクロール */
+    if(seg.fx2==="grid065"){  /* 065(統合後index): 44セットを4.5倍幅に分散配置・末尾は右下に孤立1セット・右→左スクロール */
       S.layers.forEach(l=>{l.margin=26;l.lscale=1;l.lx=0;l.ly=0;});
       const _BASE=0.80;
       /* サイズ階層 100%x2,75%x6,50%x12,25%x13,10%x11=44。末尾の1セット用に75%を1枚確保し、残り43を列に配る */
@@ -2316,7 +2334,7 @@ function createMV(){
       _si.push({x:4.40+(Math.random()-0.5)*0.05,y:0.90,s:_BASE*0.75,r:(Math.random()-0.5)*0.08});
       S.scatter={bleed:true,items:_si,scroll:{start:seg.t,end:(ANALYSIS[_i+1]?ANALYSIS[_i+1].t:seg.t+3.6),x0:0.8,x1:-4.7}};
     }
-    if(_i===123){  /* 126: GOOOOOOOOOON! をクリーンなセンター揃え三角ピラミッド(127の並べ方/タイル無し) */
+    if(seg.fx2==="pyr126"){  /* 126: GOOOOOOOOOON! をクリーンなセンター揃え三角ピラミッド(127の並べ方/タイル無し) */
       S.layers.forEach(l=>{l.margin=8;l.lscale=1;l.lx=0;l.ly=0;});      /* 1行を幅0.90W/高0.176Hで焼く */
       const _N=15,_sBot=1.0,_sTop=0.10,_r=Math.pow(_sTop/_sBot,1/(_N-1));
       const _hf=0.088,_pk=0.90;        /* GOON…(margin8)の高さ半分・段の重ね(クリーンは軽め) */
@@ -2328,7 +2346,7 @@ function createMV(){
         _s=_sn;_h=_hn;}
       S.scatter={bleed:false,items:_items};                 /* 静止配置(各段は焼きでヘドバン) */
     }
-    if(_i===124){  /* 127: YEAHHHHHHH を各段タイルで幅いっぱいに埋めるピラミッド(126の並べ方/上部の隙間も埋める) */
+    if(seg.fx2==="pyr127"){  /* 127: YEAHHHHHHH を各段タイルで幅いっぱいに埋めるピラミッド(126の並べ方/上部の隙間も埋める) */
       S.layers.forEach(l=>{l.margin=8;l.lscale=1;l.lx=0;l.ly=0;});      /* 1行を幅0.92W/高0.240Hで焼く */
       const _N=20,_sBot=1.0,_sTop=0.025,_r=Math.pow(_sTop/_sBot,1/(_N-1));
       const _hf=0.120,_pk=0.71,_rw=0.92,_nMax=9;   /* YEAH…(margin8)の高さ半分・段の重ね・幅・1段最大枚数 */
@@ -2403,7 +2421,7 @@ function updateTransport(){if(!audio.src||!isFinite(audio.duration)||audio.durat
 function fmtClock(s){s=s||0;const m=Math.floor(s/60),sec=Math.floor(s%60);return m+":"+String(sec).padStart(2,"0");}
 
 /* ===== lyric sync ===== */
-let lyricActive=-1,seqClock=0,seqLast=0;
+let lyricActive=-1,seqClock=0,seqLast=0; let _clipActiveMT=0;
 function activeCardIndex(t){let best=-1,bs=-1;
   S.cards.forEach((c,i)=>{if(c.start!=null&&c.start<=t&&c.start>=bs){bs=c.start;best=i;}});return best;}
 function masterTime(){return (audioReady()&&!audio.paused)?audio.currentTime:(S.playing?(performance.now()-t0)/1000:freezeT);}
