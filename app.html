@@ -112,7 +112,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .grp{padding:40px 0 6px}
   .grp:first-of-type{padding-top:32px}
   .grp>.gh{display:flex;align-items:baseline;justify-content:center;gap:9px;margin-bottom:16px}
-  .gh .lab{font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
+  .gh .lab{font:500 13px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
   .gh .ln{display:none}
   .gh.low{padding-top:13px}
 
@@ -189,7 +189,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .btn:hover{background:var(--ink);color:var(--paper)}
   .btn.fill{background:var(--ink);color:var(--paper)}
   #mvQual{position:relative;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:visible}
-  #mvQual #mvQualLab{display:inline-flex;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:100%}
+  #mvQual #mvQualLab{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;max-width:100%}
   #mvQual .mvq-r{font-size:.72em;text-transform:none;opacity:.85;margin-left:1px}
   .mvq-list{position:absolute;left:-1px;right:-1px;top:calc(100% + 5px);background:var(--paper);border:1px solid var(--ink);display:none;flex-direction:column;z-index:60;box-shadow:0 6px 16px rgba(0,0,0,.2);color:var(--ink)}
   #mvQual.open .mvq-list{display:flex}
@@ -226,7 +226,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .sw .chip::-webkit-color-swatch-wrapper{padding:0}
   .sw .chip::-webkit-color-swatch{border:none;border-radius:0}
   .sw .chip::-moz-color-swatch{border:none}
-  .sw .lab{font:400 9px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub);
+  .sw .lab{font:400 13px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub);
     text-transform:uppercase;flex:none;white-space:nowrap}
   .sw input.hex{flex:1;min-width:58px;text-align:right;border:none;border-bottom:1px solid transparent;background:transparent;
     font:400 11px/1 var(--mono);color:var(--ink);padding:2px 0;letter-spacing:-.01em}
@@ -289,7 +289,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     .tlbar-title{order:0;flex:0 0 100%;text-align:center;margin-top:-3px}
     .tlzoom{order:0;flex:0 0 100%;width:100%;flex-direction:column;align-items:flex-start;gap:3px}
     .tlzoom-btns{width:100%;gap:7px}
-    #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;text-align:center}
+    #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;text-align:center;padding:7px 0}
     .tlbar-spacer{order:0}
     .brand{border-right:none;z-index:30}
     .stage{order:1;position:sticky;top:var(--brandH,150px);z-index:20;
@@ -353,6 +353,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   /* ===== PC(>940px) 文字サイズ調整：見出し75% / ヘッダーボタン90% ===== */
   @media (min-width:941px){
     .lab{font-size:14.25px}
+    .gh .lab,.sw .lab{font-size:11.7px}
     body.mode-mv .cards{max-height:max(300px,calc(100vh - 340px))}
     .gh{margin-bottom:12px}
     .tlbar-title{font-size:14.25px}
@@ -381,7 +382,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn fill" id="btnRemix" style="padding:13px 8px;font-size:13px;letter-spacing:-.01em">REMIX</button>
       </div>
       <div class="row g2" id="transRow" style="margin-top:8px">
-        <button class="btn" id="btnPlay">❚❚</button>
+        <button class="btn" id="btnPlay">❚ ❚</button>
         <button class="btn acc" id="btnStockLyric" title="現在のLYRICを素材として保存">STOCK</button>
       </div>
     </div>
@@ -689,7 +690,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <span class="zoomn" id="ofPP">＋0.5</span>
       </div>
       <div class="tl-grp tl-del">
-      <button class="btn tlbar-clear" id="btnTlDelOne" style="width:84px">DELETE</button><button class="btn tlbar-clear" id="btnTlClear">ALL DELETE</button>
+      <button class="btn tlbar-clear" id="btnTlDelOne">DELETE</button><button class="btn tlbar-clear" id="btnTlClear">ALL DELETE</button>
       </div>
     </div>
     <div class="tlwrap" id="tlwrap">
@@ -1695,7 +1696,7 @@ swatch("bgHex","bg",()=>S.bg,v=>S.bg=v);
 
 /* transport buttons */
 $("btnPlay").onclick=()=>{if(S.playing){freezeT=(performance.now()-t0)/1000;S.playing=false;}
-  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"❚❚":"▶";};
+  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"❚ ❚":"▶";};
 /* MV書き出しサイズ カスタムドロップダウン */
 (function(){var q=$("mvQual");if(!q)return;var lab=$("mvQualLab");
   q.addEventListener("click",function(e){var o=e.target.closest(".mvq-o");
