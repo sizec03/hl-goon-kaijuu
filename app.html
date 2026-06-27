@@ -52,7 +52,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .app{display:grid;grid-template-columns:372px 1fr;grid-template-rows:auto 1fr auto;height:100%}
   .tlbar{grid-column:1 / span 2;grid-row:3;background:var(--sheet);border-top:none;padding:8px 16px 10px;display:flex;flex-direction:column;gap:7px;min-width:0}
   .tlbar-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .tlbar-title{flex:0 0 100%;text-align:center;margin-top:-3px;font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
+  .tlbar-title{font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
   .tlbar-spacer{flex:1 1 12px;min-width:8px}
   .tlbar .tlwrap{margin-top:0;height:96px}
   .tlbar-head .tlbar-clear{width:117px;padding:5px 0;font:500 10px/1 var(--mono);letter-spacing:-.01em;text-align:center;flex:0 0 auto}
@@ -191,10 +191,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #mvQual{position:relative;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:visible}
   #mvQual #mvQualLab{display:inline-flex;align-items:baseline;white-space:nowrap;overflow:hidden;max-width:100%}
   #mvQual .mvq-r{font-size:.72em;text-transform:none;opacity:.85;margin-left:1px}
-  .mvq-list{position:absolute;left:-1px;right:-1px;top:calc(100% + 5px);background:var(--paper);border:1px solid var(--ink);display:none;flex-direction:column;z-index:60;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+  .mvq-list{position:absolute;left:-1px;right:-1px;top:calc(100% + 5px);background:var(--paper);border:1px solid var(--ink);display:none;flex-direction:column;z-index:60;box-shadow:0 6px 16px rgba(0,0,0,.2);color:var(--ink)}
   #mvQual.open .mvq-list{display:flex}
-  .mvq-o{padding:9px 4px;white-space:nowrap;text-align:center;border-bottom:1px solid var(--hair)}
+  .mvq-o{padding:9px 4px;white-space:nowrap;text-align:center;border-bottom:1px solid var(--hair);color:var(--ink)}
   .mvq-o:last-child{border-bottom:none}
+  .mvq-o:hover{background:var(--ink);color:var(--paper)}
   .btn.fill:hover{background:var(--accent);border-color:var(--accent)}
   .btn.acc{border-color:var(--accent);color:var(--accent)}
   .btn.acc:hover{background:var(--accent);color:#fff}
@@ -284,6 +285,10 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   @media (prefers-reduced-motion:reduce){.recpill.on .dot{animation:none}}
   @media (max-width:940px){
     .app{display:flex;flex-direction:column;height:auto}
+    .tlbar-title{flex:0 0 100%;text-align:center;margin-top:-3px}
+    .tlzoom{flex:0 0 100%;width:100%}
+    .tlzoom-btns{width:100%;gap:7px}
+    #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;text-align:center}
     .brand{border-right:none;z-index:30}
     .stage{order:1;position:sticky;top:var(--brandH,150px);z-index:20;
       border-bottom:1px solid var(--ink)}
@@ -326,6 +331,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .tlgrip:active::before,.tlgrip:hover::before{filter:brightness(1.3)}
   .tlempty{position:absolute;inset:20px 0 0 0;display:flex;align-items:center;justify-content:center;color:var(--faint);font:400 10px/1 var(--mono);letter-spacing:-.01em;pointer-events:none;min-width:100%}
   .zoomn{border:1px solid var(--hair);padding:5px 12px;font:500 13px/1 var(--mono);cursor:pointer;color:var(--ink);user-select:none}
+  .tlzoom{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+  .tlzoom-btns{display:flex;gap:7px}
   #ofMM,#ofM,#ofP,#ofPP{font-size:10px}
   .zoomn:hover{border-color:var(--ink)}
   .tledit{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
@@ -390,13 +397,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <section class="grp">
       <div class="gh"><span class="lab">WORD</span><span class="ln"></span></div>
       <textarea id="text" spellcheck="false" style="text-transform:uppercase">GOON!</textarea>
+      <label class="f"><span class="k">size サイズ</span><span class="v" id="marginV">13</span></label>
+      <input type="range" id="margin" min="0" max="80" value="10">
       <label class="f"><span class="k">tracking 字間</span><span class="v" id="trackV">6</span></label>
       <input type="range" id="track" min="-30" max="90" value="6">
       <label class="f"><span class="k">leading 行間</span><span class="v" id="leadV">1.15</span></label>
       <input type="range" id="lead" min="0.85" max="2" step="0.01" value="1.15">
-      <label class="f"><span class="k">size サイズ</span><span class="v" id="marginV">13</span></label>
-      <input type="range" id="margin" min="0" max="80" value="10">
-      <label style="display:flex;align-items:center;gap:7px;margin:9px 0 1px;font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase;cursor:pointer;user-select:none"><input type="checkbox" id="wordAll" style="width:13px;height:13px;cursor:pointer;margin:0;flex:none">全レイヤーに適用（文字・字間・行間・余白）</label>
+      <label style="display:flex;align-items:center;gap:7px;margin:9px 0 1px;font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase;cursor:pointer;user-select:none"><input type="checkbox" id="wordAll" style="width:13px;height:13px;cursor:pointer;margin:0;flex:none">全レイヤーに適用（テキスト、サイズ、字間、行間）</label>
     </section>
 
 
@@ -524,21 +531,21 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn" id="btnLayerAdd">+ layer</button>
         <button class="btn" id="btnLayerDel">delete</button>
       </div>
+      <label class="f" style="margin-top:10px"><span class="k">拡大</span><span class="v" id="lscaleV">1.00</span></label>
+      <input type="range" id="lscale" min="0.3" max="10" step="0.01" value="1">
       <div class="row g2" style="margin-top:10px;gap:14px">
-        <div><label class="f"><span class="k">x 横位置</span><span class="v" id="lxV">0</span></label>
+        <div><label class="f"><span class="k">左右</span><span class="v" id="lxV">0</span></label>
           <input type="range" id="lx" min="-300" max="300" value="0"></div>
-        <div><label class="f"><span class="k">y 縦位置</span><span class="v" id="lyV">0</span></label>
+        <div><label class="f"><span class="k">上下</span><span class="v" id="lyV">0</span></label>
           <input type="range" id="ly" min="-300" max="300" value="0"></div>
       </div>
-      <label class="f"><span class="k">scale 倍率</span><span class="v" id="lscaleV">1.00</span></label>
-      <input type="range" id="lscale" min="0.3" max="10" step="0.01" value="1">
       <div style="display:flex;gap:18px;margin-top:8px">
         <div class="tog" id="moveTog"><span class="box"></span>MOVE 移動</div>
       </div>
       <div class="secbody" id="moveBody">
-      <label class="f"><span class="k">x0 開始横位置</span><span class="v" id="mvX0V">0.80</span></label>
+      <label class="f"><span class="k">開始（左右）</span><span class="v" id="mvX0V">0.80</span></label>
       <input type="range" id="mvX0" min="-6" max="6" step="0.05" value="0.8">
-      <label class="f"><span class="k">x1 終了横位置</span><span class="v" id="mvX1V">-4.70</span></label>
+      <label class="f"><span class="k">終了（左右）</span><span class="v" id="mvX1V">-4.70</span></label>
       <input type="range" id="mvX1" min="-6" max="6" step="0.05" value="-4.7">
       </div>
       <div style="display:flex;gap:18px;margin-top:6px">
@@ -553,10 +560,10 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
 
     <!-- LO-FI — 低解像度＋ノイズ -->
     <section class="grp" id="secLofi">
-      <div class="gh"><span class="lab">LO-FI</span><span class="ln"></span></div>
+      <div class="gh"><span class="lab">TEXTURE</span><span class="ln"></span></div>
       <div class="tog on" id="lofiTog"><span class="box"></span>低解像度＋ノイズ</div>
       <div class="tog on" id="lofiAllTog"><span class="box"></span>全クリップに適用</div>
-      <label class="f"><span class="k">pixel 粗さ</span><span class="v" id="lofiPixV">3</span></label>
+      <label class="f"><span class="k">pixel 解像度</span><span class="v" id="lofiPixV">3</span></label>
       <input type="range" id="lofiPix" min="1" max="16" step="1" value="3">
       <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">0.15</span></label>
       <input type="range" id="lofiNoise" min="0" max="0.6" step="0.01" value="0.15">
@@ -647,9 +654,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   <div class="tlbar m-only" id="tlbar">
     <div class="tlbar-head">
       <span class="tlbar-title">TIMELINE</span>
-      <span class="hint" id="tlZoomLbl" style="margin:0"></span>
-      <span class="zoomn" id="tlZoomOut">－</span>
-      <span class="zoomn" id="tlZoomIn">＋</span>
+      <div class="tlzoom">
+        <span class="hint" id="tlZoomLbl" style="margin:0"></span>
+        <div class="tlzoom-btns">
+          <span class="zoomn" id="tlZoomOut">－</span>
+          <span class="zoomn" id="tlZoomIn">＋</span>
+        </div>
+      </div>
       <div class="tledit" id="tledit" style="display:none">
         <span class="tlsel" id="tlSel">—</span>
         <span class="nudge" data-d="-0.1">−0.1s</span>
@@ -1680,8 +1691,14 @@ $("btnPlay").onclick=()=>{if(S.playing){freezeT=(performance.now()-t0)/1000;S.pl
 })();
 /* SHARE: ツール/作品リンクの共有 */
 (function(){var b=$("btnShareLink");if(!b)return;
-  b.onclick=async function(){var d={title:"HL — Headbanging Lyrics",text:"歌詞がヘッドバンギングするMVジェネレーター",url:location.href};
-    try{if(navigator.share){await navigator.share(d);}else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);alert("URLをコピーしました");}else{prompt("URL",location.href);}}catch(e){}
+  function toast(msg){var t=document.createElement("div");t.textContent=msg;t.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#191a1d;color:#fff;font:500 12px/1.4 sans-serif;padding:10px 16px;border-radius:4px;z-index:99999;max-width:88vw;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.3);word-break:break-all";document.body.appendChild(t);setTimeout(function(){t.style.transition="opacity .4s";t.style.opacity="0";setTimeout(function(){t.remove();},420);},1900);}
+  b.onclick=async function(){
+    var url=location.href;
+    if(navigator.share){try{await navigator.share({title:"HL — Headbanging Lyrics",text:"歌詞がヘッドバンギングするMVジェネレーター",url:url});return;}catch(e){if(e&&e.name==="AbortError")return;}}
+    var ok=false;
+    try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(url);ok=true;}}catch(e){}
+    if(!ok){try{var ta=document.createElement("textarea");ta.value=url;ta.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(ta);ta.focus();ta.select();ok=document.execCommand("copy");document.body.removeChild(ta);}catch(e){}}
+    toast(ok?"URLをコピーしました":url);
   };
 })();
 
