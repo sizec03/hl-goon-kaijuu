@@ -103,12 +103,12 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #wipeB{background:var(--accent);transform-origin:bottom;z-index:31}  /* 青：下→上（黒の後） */
   #wipeK.run{animation:fillY .42s cubic-bezier(.6,0,.25,1) forwards}
   #wipeB.run{animation:fillYb .42s cubic-bezier(.6,0,.25,1) forwards}
-  #warn{position:fixed;inset:0;z-index:32;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .28s ease}
+  #warn{position:fixed;inset:0;z-index:32;display:grid;place-items:center;text-align:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .28s ease}
   #warn.show{opacity:1}
-  #warn .warn-in{color:#fff;max-width:min(86vw,520px)}
-  #warn .warn-lab{font:600 11px/1 var(--mono);letter-spacing:.34em;text-transform:uppercase;margin-bottom:12px;opacity:1}
-  #warn .warn-t{font:400 9px/1.85 var(--sans);letter-spacing:.02em;margin:0 0 4px}
-  #warn .warn-s{font:400 9px/1.85 var(--sans);letter-spacing:.02em;margin:0;opacity:1}
+  #warn .warn-in{color:#fff;max-width:min(86vw,520px);margin:0 auto}
+  #warn .warn-lab{font:600 9.9px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;margin-bottom:12px;opacity:1}
+  #warn .warn-t{font:400 8.1px/1.85 var(--sans);letter-spacing:-.01em;margin:0 0 4px}
+  #warn .warn-s{font:400 8.1px/1.85 var(--sans);letter-spacing:-.01em;margin:0;opacity:1}
   @keyframes fillY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
   @keyframes fillYb{from{transform:scaleY(0)}to{transform:scaleY(1)}}  /* 青も全面（最初の状態） */
   @media(prefers-reduced-motion:reduce){#wipeK.run,#wipeB.run{animation-duration:.01s}}
