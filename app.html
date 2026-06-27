@@ -52,8 +52,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .app{display:grid;grid-template-columns:372px 1fr;grid-template-rows:auto 1fr auto;height:100%}
   .tlbar{grid-column:1 / span 2;grid-row:3;background:var(--sheet);border-top:none;padding:8px 16px 10px;display:flex;flex-direction:column;gap:7px;min-width:0}
   .tlbar-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .tlbar-title{font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
-  .tlbar-spacer{flex:1 1 12px;min-width:8px}
+  .tlbar-title{order:-2;font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
+  .tlbar-spacer{order:-1;flex:1 1 12px;min-width:8px}
   .tlbar .tlwrap{margin-top:0;height:96px}
   .tlbar-head .tlbar-clear{width:117px;padding:5px 0;font:500 10px/1 var(--mono);letter-spacing:-.01em;text-align:center;flex:0 0 auto}
   .tlbar .tlempty{font-size:12px}
@@ -199,7 +199,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .btn.fill:hover{background:var(--accent);border-color:var(--accent)}
   .btn.acc{border-color:var(--accent);color:var(--accent)}
   .btn.acc:hover{background:var(--accent);color:#fff}
-  #btnShareMv{background:transparent;color:#fff;border-color:var(--accent)}
+  #btnShareMv{background:transparent;color:#fff;border-color:var(--accent);display:flex;align-items:center;justify-content:center}
+  #btnPreviewMv{display:flex;align-items:center;justify-content:center}
   #btnShareMv:hover{background:var(--accent);color:#fff}
   #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:none;
     align-items:center;background:#0d0d10;border:1px solid var(--accent);color:#fff;
@@ -285,10 +286,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   @media (prefers-reduced-motion:reduce){.recpill.on .dot{animation:none}}
   @media (max-width:940px){
     .app{display:flex;flex-direction:column;height:auto}
-    .tlbar-title{flex:0 0 100%;text-align:center;margin-top:-3px}
-    .tlzoom{flex:0 0 100%;width:100%}
+    .tlbar-title{order:0;flex:0 0 100%;text-align:center;margin-top:-3px}
+    .tlzoom{order:0;flex:0 0 100%;width:100%;flex-direction:column;align-items:flex-start;gap:3px}
     .tlzoom-btns{width:100%;gap:7px}
     #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;text-align:center}
+    .tlbar-spacer{order:0}
     .brand{border-right:none;z-index:30}
     .stage{order:1;position:sticky;top:var(--brandH,150px);z-index:20;
       border-bottom:1px solid var(--ink)}
@@ -331,7 +333,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .tlgrip:active::before,.tlgrip:hover::before{filter:brightness(1.3)}
   .tlempty{position:absolute;inset:20px 0 0 0;display:flex;align-items:center;justify-content:center;color:var(--faint);font:400 10px/1 var(--mono);letter-spacing:-.01em;pointer-events:none;min-width:100%}
   .zoomn{border:1px solid var(--hair);padding:5px 12px;font:500 13px/1 var(--mono);cursor:pointer;color:var(--ink);user-select:none}
-  .tlzoom{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+  .tlzoom{display:flex;flex-direction:row;align-items:center;gap:6px}
   .tlzoom-btns{display:flex;gap:7px}
   #ofMM,#ofM,#ofP,#ofPP{font-size:10px}
   .zoomn:hover{border-color:var(--ink)}
@@ -343,9 +345,19 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .tl-grp{display:contents}
   @media (max-width:940px){
     .tlbar-head .tl-grp{display:flex;align-items:center;gap:7px;flex:0 0 100%;width:100%;flex-wrap:wrap}
-    .tlbar-head .tl-off .tl-off-lbl{flex:0 0 100%;margin:0 0 2px!important}
+    .tlbar-head .tl-off{align-items:flex-start;justify-content:flex-start}
+    .tlbar-head .tl-off .tl-off-lbl{flex:0 0 100%;text-align:left;margin:0 0 3px!important}
     .tlbar-head .tl-off .zoomn{flex:1 1 0;text-align:center;padding:7px 0}
     .tlbar-head .tl-del .btn{flex:1 1 0!important;width:auto!important}
+  }
+  /* ===== PC(>940px) 文字サイズ調整：見出し75% / ヘッダーボタン90% ===== */
+  @media (min-width:941px){
+    .lab{font-size:14.25px}
+    body.mode-mv .cards{max-height:max(300px,calc(100vh - 340px))}
+    .gh{margin-bottom:12px}
+    .tlbar-title{font-size:14.25px}
+    #btnCreate,#btnShareLink,#btnShuffle,#btnRemix{font-size:11.7px!important;padding:11px 8px!important}
+    #btnShareMv,#btnStockLyric,#mvQual{font-size:8.91px}
   }
 </style>
 </head>
@@ -369,7 +381,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn fill" id="btnRemix" style="padding:13px 8px;font-size:13px;letter-spacing:-.01em">REMIX</button>
       </div>
       <div class="row g2" id="transRow" style="margin-top:8px">
-        <button class="btn" id="btnPlay">■</button>
+        <button class="btn" id="btnPlay">❚❚</button>
         <button class="btn acc" id="btnStockLyric" title="現在のLYRICを素材として保存">STOCK</button>
       </div>
     </div>
@@ -398,11 +410,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <div class="gh"><span class="lab">WORD</span><span class="ln"></span></div>
       <textarea id="text" spellcheck="false" style="text-transform:uppercase">GOON!</textarea>
       <label class="f"><span class="k">size サイズ</span><span class="v" id="marginV">13</span></label>
-      <input type="range" id="margin" min="0" max="80" value="10">
+      <input type="range" id="margin" min="0" max="100" step="5" value="12.5">
       <label class="f"><span class="k">tracking 字間</span><span class="v" id="trackV">6</span></label>
-      <input type="range" id="track" min="-30" max="90" value="6">
+      <input type="range" id="track" min="-25" max="100" step="5" value="6">
       <label class="f"><span class="k">leading 行間</span><span class="v" id="leadV">1.15</span></label>
-      <input type="range" id="lead" min="0.85" max="2" step="0.01" value="1.15">
+      <input type="range" id="lead" min="0.8" max="2" step="0.1" value="1.15">
       <label style="display:flex;align-items:center;gap:7px;margin:9px 0 1px;font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase;cursor:pointer;user-select:none"><input type="checkbox" id="wordAll" style="width:13px;height:13px;cursor:pointer;margin:0;flex:none">全レイヤーに適用（テキスト、サイズ、字間、行間）</label>
     </section>
 
@@ -438,13 +450,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <p class="hint" id="faceHint" style="display:none">実フォント選択中：動き・色は効きますが、線の太さ／終端／骨格変形など線エンジンの加工は無効です（読込にネット接続が必要）。</p>
       <div class="strokeonly">
         <label class="f"><span class="k">round 丸み⇔角</span><span class="v" id="curveV">0.30</span></label>
-        <input type="range" id="curve" min="0" max="1.2" step="0.01" value="0.3">
+        <input type="range" id="curve" min="0" max="100" step="5" value="25">
         <label class="f"><span class="k">flare 台形</span><span class="v" id="flareV">0.00</span></label>
-        <input type="range" id="flare" min="-0.6" max="0.6" step="0.01" value="0">
+        <input type="range" id="flare" min="-5" max="5" step="1" value="0">
         <label class="f"><span class="k">slant 傾き</span><span class="v" id="slantV">0</span></label>
-        <input type="range" id="slant" min="-30" max="30" value="0">
+        <input type="range" id="slant" min="-25" max="25" step="5" value="0">
         <label class="f"><span class="k">noise ノイズ</span><span class="v" id="roughV">3.0</span></label>
-        <input type="range" id="rough" min="0" max="40" value="3">
+        <input type="range" id="rough" min="0" max="10" step="1" value="0.75">
       </div>
     </section>
 
@@ -457,11 +469,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <span data-stroke="inline">inline</span>
       </div>
       <label class="f"><span class="k">weight 太さ</span><span class="v" id="weightV">26</span></label>
-      <input type="range" id="weight" min="2" max="70" value="26">
+      <input type="range" id="weight" min="1" max="50" step="1" value="18.29">
       <label class="f"><span class="k">strands 複線数</span><span class="v" id="inlineV">4</span></label>
-      <input type="range" id="inline" min="2" max="9" value="4">
+      <input type="range" id="inline" min="1" max="10" step="1" value="4">
       <label class="f"><span class="k">contrast 抑揚</span><span class="v" id="contrastV">0</span></label>
-      <input type="range" id="contrast" min="0" max="90" value="0">
+      <input type="range" id="contrast" min="0" max="100" step="5" value="0">
       <label class="f"><span class="k">FINISH 線先</span></label>
       <div class="opt" id="capOpt">
         <span data-cap="butt">FLAT</span><span class="on" data-cap="spike">SPIKE</span>
@@ -474,11 +486,11 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <span data-dash="dotted">DOT</span>
       </div>
       <label class="f"><span class="k">perspective 遠近</span><span class="v" id="lperspV">0</span></label>
-      <input type="range" id="lpersp" min="-100" max="100" step="1" value="0">
+      <input type="range" id="lpersp" min="-100" max="100" step="5" value="0">
       <label class="f"><span class="k">angle 行の角度</span><span class="v" id="langleV">0°</span></label>
-      <input type="range" id="langle" min="0" max="360" step="10" value="0">
+      <input type="range" id="langle" min="0" max="360" step="5" value="0">
       <label class="f"><span class="k">curve 行の湾曲</span><span class="v" id="larcV">0</span></label>
-      <input type="range" id="larc" min="-100" max="100" step="1" value="0">
+      <input type="range" id="larc" min="-100" max="100" step="5" value="0">
     </section>
 
     <!-- COLOR — palette & background -->
@@ -503,14 +515,14 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <div class="gh"><span class="lab">MOTION STYLE</span><span class="ln"></span></div>
       <div class="opt wrap" id="motionOpt"></div>
       <label class="f"><span class="k">speed 速度</span><span class="v" id="speedV">1.0</span></label>
-      <input type="range" id="speed" min="0" max="10" step="0.05" value="1">
+      <input type="range" id="speed" min="0" max="10" step="0.5" value="1">
       <label class="f"><span class="k">amount 振れ幅</span><span class="v" id="ampV">1.00</span></label>
-      <input type="range" id="amp" min="0" max="3" step="0.05" value="1">
+      <input type="range" id="amp" min="0" max="5" step="0.5" value="1">
       <label class="f"><span class="k">ease 緩急</span></label>
       <select id="easing"><option value="ease" selected>なめらか</option>
         <option value="linear">ふつう</option><option value="step">かたい</option></select>
       <label class="f"><span class="k">delay 文字ごとのズレ</span><span class="v" id="phaseV">0.20</span></label>
-      <input type="range" id="phase" min="0" max="1.2" step="0.01" value="0.2">
+      <input type="range" id="phase" min="0" max="100" step="5" value="16.67">
       <div style="display:flex;gap:34px;margin-top:10px;flex-wrap:wrap">
         <div>
           <div class="hint">ヘドバン演出</div>
@@ -532,28 +544,28 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn" id="btnLayerDel">delete</button>
       </div>
       <label class="f" style="margin-top:10px"><span class="k">拡大</span><span class="v" id="lscaleV">1.00</span></label>
-      <input type="range" id="lscale" min="0.3" max="10" step="0.01" value="1">
+      <input type="range" id="lscale" min="0.5" max="10" step="0.5" value="1">
       <div class="row g2" style="margin-top:10px;gap:14px">
         <div><label class="f"><span class="k">左右</span><span class="v" id="lxV">0</span></label>
-          <input type="range" id="lx" min="-300" max="300" value="0"></div>
+          <input type="range" id="lx" min="-200" max="200" step="5" value="0"></div>
         <div><label class="f"><span class="k">上下</span><span class="v" id="lyV">0</span></label>
-          <input type="range" id="ly" min="-300" max="300" value="0"></div>
+          <input type="range" id="ly" min="-200" max="200" step="5" value="0"></div>
       </div>
       <div style="display:flex;gap:18px;margin-top:8px">
         <div class="tog" id="moveTog"><span class="box"></span>MOVE 移動</div>
       </div>
       <div class="secbody" id="moveBody">
       <label class="f"><span class="k">開始（左右）</span><span class="v" id="mvX0V">0.80</span></label>
-      <input type="range" id="mvX0" min="-6" max="6" step="0.05" value="0.8">
+      <input type="range" id="mvX0" min="-5" max="5" step="0.5" value="0.8">
       <label class="f"><span class="k">終了（左右）</span><span class="v" id="mvX1V">-4.70</span></label>
-      <input type="range" id="mvX1" min="-6" max="6" step="0.05" value="-4.7">
+      <input type="range" id="mvX1" min="-5" max="5" step="0.5" value="-4.7">
       </div>
       <div style="display:flex;gap:18px;margin-top:6px">
         <div class="tog" id="blurTog"><span class="box"></span>LIGHT 光</div>
       </div>
       <div class="secbody" id="lightBody">
       <label class="f"><span class="k">amount 光量</span><span class="v" id="blurV">4</span></label>
-      <input type="range" id="blur" min="0" max="24" value="4">
+      <input type="range" id="blur" min="0" max="25" step="1" value="4">
       </div>
       
     </section>
@@ -562,14 +574,14 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <section class="grp" id="secLofi">
       <div class="gh"><span class="lab">TEXTURE</span><span class="ln"></span></div>
       <div class="tog on" id="lofiTog"><span class="box"></span>低解像度＋ノイズ</div>
-      <div class="tog on" id="lofiAllTog"><span class="box"></span>全クリップに適用</div>
+      <div class="tog on" id="lofiAllTog"><span class="box"></span>すべてのLYRICに適用</div>
       <label class="f"><span class="k">pixel 解像度</span><span class="v" id="lofiPixV">3</span></label>
-      <input type="range" id="lofiPix" min="1" max="16" step="1" value="3">
-      <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">0.15</span></label>
-      <input type="range" id="lofiNoise" min="0" max="0.6" step="0.01" value="0.15">
+      <input type="range" id="lofiPix" min="1" max="25" step="1" value="3">
+      <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">25</span></label>
+      <input type="range" id="lofiNoise" min="0" max="100" step="5" value="25">
       <div class="tog on" id="fpsTog"><span class="box"></span>コマ落とし</div>
       <label class="f"><span class="k">fps コマ数</span><span class="v" id="fpsRateV">28</span></label>
-      <input type="range" id="fpsRate" min="2" max="30" step="1" value="28">
+      <input type="range" id="fpsRate" min="1" max="50" step="1" value="28">
     </section>
 
     <!-- FRAME — live frame & credits -->
@@ -1583,18 +1595,21 @@ MOTIONS.forEach(([key,label])=>{const s=document.createElement("span");s.dataset
 
 
 
+const RM={margin:[0,100,0,80],curve:[0,100,0,1.2],flare:[-5,5,-0.6,0.6],rough:[0,10,0,40],weight:[1,50,2,70],phase:[0,100,0,1.2],lx:[-200,200,-300,300],ly:[-200,200,-300,300],lofiNoise:[0,100,0,0.6]};
+function u2o(id,x){const m=RM[id];return m?m[2]+(x-m[0])/(m[1]-m[0])*(m[3]-m[2]):x;}
+function o2u(id,v){const m=RM[id];return m?m[0]+(v-m[2])/(m[3]-m[2])*(m[1]-m[0]):v;}
 function bindRange(id,set,fmt){const el=$(id),v=$(id+"V");
-  el.oninput=()=>{set(parseFloat(el.value));if(v)v.textContent=fmt(parseFloat(el.value));};}
+  el.oninput=()=>{const _u=parseFloat(el.value);set(u2o(id,_u));if(v)v.textContent=fmt(_u);};}
 let wordAll=false;   /* ON時：WORD（文字・字間・行間・余白）を全レイヤーへ反映 */
 function applyWordToAll(){const l=cur();S.layers.forEach(x=>{x.text=l.text;x.track=l.track;x.lead=l.lead;x.margin=l.margin;});}
 $("wordAll").onchange=e=>{wordAll=e.target.checked;if(wordAll){applyWordToAll();note("WORD設定を全レイヤーに適用");}};
-bindRange("track",x=>{cur().track=x;if(wordAll)S.layers.forEach(l=>l.track=x);},x=>x);
-bindRange("lead",x=>{cur().lead=x;if(wordAll)S.layers.forEach(l=>l.lead=x);},x=>x.toFixed(2));
-bindRange("margin",x=>{cur().margin=40-x;if(wordAll)S.layers.forEach(l=>l.margin=40-x);},x=>Math.ceil(x/80*100));
-bindRange("curve",x=>cur().curve=x,x=>x.toFixed(2));
-bindRange("flare",x=>cur().flare=x,x=>x.toFixed(2));
+bindRange("track",x=>{cur().track=x;if(wordAll)S.layers.forEach(l=>l.track=x);},x=>x|0);
+bindRange("lead",x=>{cur().lead=x;if(wordAll)S.layers.forEach(l=>l.lead=x);},x=>x.toFixed(1));
+bindRange("margin",x=>{cur().margin=40-x;if(wordAll)S.layers.forEach(l=>l.margin=40-x);},x=>x|0);
+bindRange("curve",x=>cur().curve=x,x=>x|0);
+bindRange("flare",x=>cur().flare=x,x=>x|0);
 bindRange("slant",x=>cur().slant=x,x=>x);
-bindRange("rough",x=>cur().rough=x,x=>x.toFixed(1));
+bindRange("rough",x=>cur().rough=x,x=>x|0);
 bindRange("langle",x=>cur().lineAngle=x,x=>x+"°");
 bindRange("larc",x=>cur().lineArc=x,x=>x|0);
 bindRange("lpersp",x=>cur().linePersp=x,x=>x|0);
@@ -1602,23 +1617,23 @@ bindRange("weight",x=>cur().weight=x,x=>x|0);
 bindRange("inline",x=>cur().inline=x|0,x=>x|0);
 bindRange("contrast",x=>cur().contrast=x,x=>x|0);
 bindRange("speed",x=>cur().speed=x,x=>x.toFixed(1));
-bindRange("amp",x=>cur().amp=x,x=>x.toFixed(2));
-bindRange("phase",x=>cur().phase=x,x=>x.toFixed(2));
+bindRange("amp",x=>cur().amp=x,x=>x.toFixed(1));
+bindRange("phase",x=>cur().phase=x,x=>x|0);
 bindRange("blur",x=>cur().blurAmt=x,x=>x|0);
 bindRange("lx",x=>cur().lx=x,x=>x|0);
 bindRange("ly",x=>cur().ly=x,x=>x|0);
-bindRange("lscale",x=>cur().lscale=x,x=>x.toFixed(2));
+bindRange("lscale",x=>cur().lscale=x,x=>x.toFixed(1));
 function syncMove(){$("moveTog").classList.toggle("on",S.move.on);$("moveBody").classList.toggle("dim",!S.move.on);
-  $("mvX0").value=S.move.x0;$("mvX0V").textContent=S.move.x0.toFixed(2);
-  $("mvX1").value=S.move.x1;$("mvX1V").textContent=S.move.x1.toFixed(2);}
+  $("mvX0").value=S.move.x0;$("mvX0V").textContent=S.move.x0.toFixed(1);
+  $("mvX1").value=S.move.x1;$("mvX1V").textContent=S.move.x1.toFixed(1);}
 tog("moveTog",()=>S.move.on,v=>{S.move.on=v;});
 $("moveTog").addEventListener("click",()=>{$("moveBody").classList.toggle("dim",!S.move.on);});
-bindRange("mvX0",x=>S.move.x0=x,x=>x.toFixed(2));
-bindRange("mvX1",x=>S.move.x1=x,x=>x.toFixed(2));
+bindRange("mvX0",x=>S.move.x0=x,x=>x.toFixed(1));
+bindRange("mvX1",x=>S.move.x1=x,x=>x.toFixed(1));
 tog("lofiTog",()=>S.lofi.on,v=>S.lofi.on=v);
 tog("lofiAllTog",()=>S.lofi.all,v=>S.lofi.all=v);
 bindRange("lofiPix",x=>S.lofi.pixel=x|0,x=>x|0);
-bindRange("lofiNoise",x=>S.lofi.noise=x,x=>x.toFixed(2));
+bindRange("lofiNoise",x=>S.lofi.noise=x,x=>x|0);
 tog("fpsTog",()=>S.fps.on,v=>S.fps.on=v);
 bindRange("fpsRate",x=>S.fps.rate=x|0,x=>x|0);
 bindRange("dwell",x=>S.dwell=x,x=>x.toFixed(1));
@@ -1680,7 +1695,7 @@ swatch("bgHex","bg",()=>S.bg,v=>S.bg=v);
 
 /* transport buttons */
 $("btnPlay").onclick=()=>{if(S.playing){freezeT=(performance.now()-t0)/1000;S.playing=false;}
-  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"■":"▶";};
+  else{t0=performance.now()-freezeT*1000;S.playing=true;}$("btnPlay").textContent=S.playing?"❚❚":"▶";};
 /* MV書き出しサイズ カスタムドロップダウン */
 (function(){var q=$("mvQual");if(!q)return;var lab=$("mvQualLab");
   q.addEventListener("click",function(e){var o=e.target.closest(".mvq-o");
@@ -2511,7 +2526,7 @@ function lyricTick(){
     return;}
   if(idx>=0&&idx!==lyricActive){lyricActive=idx;frameSwitchColor();applySnapshot(S.cards[idx].data);
     renderLayerList();syncUI();renderCards();}}
-function setPlayBtn(on){const b=$("btnPreviewMv");if(b)b.textContent=on?"■":"▶";}
+function setPlayBtn(on){const b=$("btnPreviewMv");if(b)b.textContent=on?"❚❚":"▶";}
 function previewSync(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   S.lyric.on=!S.lyric.on;setPlayBtn(S.lyric.on);
   if(S.lyric.on){lyricActive=-1;seqLast=(S.playing?(performance.now()-t0)/1000:freezeT);
@@ -2558,27 +2573,27 @@ function syncUI(){const l=cur();
   $("patNum").innerHTML="PATTERN<b>"+patternCode(l.seed)+"</b>";
   $("text").value=l.text;
   $("track").value=l.track;$("trackV").textContent=l.track;
-  $("lead").value=l.lead;$("leadV").textContent=(+l.lead).toFixed(2);
-  $("margin").value=40-l.margin;$("marginV").textContent=Math.ceil((40-l.margin)/80*100);
+  $("lead").value=l.lead;$("leadV").textContent=(+l.lead).toFixed(1);
+  $("margin").value=o2u("margin",40-l.margin);$("marginV").textContent=o2u("margin",40-l.margin)|0;
   $("fontSel").value=l.font||"";
   document.body.classList.toggle("face-on",!!l.face);
   $("faceHint").style.display=l.face?"block":"none";
-  $("curve").value=l.curve;$("curveV").textContent=(+l.curve).toFixed(2);
-  $("flare").value=l.flare;$("flareV").textContent=(+l.flare).toFixed(2);
+  $("curve").value=o2u("curve",l.curve);$("curveV").textContent=o2u("curve",l.curve)|0;
+  $("flare").value=o2u("flare",l.flare);$("flareV").textContent=o2u("flare",l.flare)|0;
   $("slant").value=l.slant;$("slantV").textContent=l.slant;
-  $("rough").value=l.rough;$("roughV").textContent=(+l.rough).toFixed(1);
+  $("rough").value=o2u("rough",l.rough);$("roughV").textContent=o2u("rough",l.rough)|0;
   $("langle").value=l.lineAngle||0;$("langleV").textContent=(l.lineAngle||0)+"°";
   $("larc").value=l.lineArc||0;$("larcV").textContent=(l.lineArc||0)|0;
-  $("weight").value=l.weight;$("weightV").textContent=l.weight|0;
+  $("weight").value=o2u("weight",l.weight);$("weightV").textContent=o2u("weight",l.weight)|0;
   $("inline").value=l.inline;$("inlineV").textContent=l.inline|0;
   $("contrast").value=l.contrast;$("contrastV").textContent=l.contrast|0;
   $("speed").value=l.speed;$("speedV").textContent=(+l.speed).toFixed(1);
-  $("amp").value=l.amp;$("ampV").textContent=(+l.amp).toFixed(2);
-  $("phase").value=l.phase;$("phaseV").textContent=(+l.phase).toFixed(2);
+  $("amp").value=l.amp;$("ampV").textContent=(+l.amp).toFixed(1);
+  $("phase").value=o2u("phase",l.phase);$("phaseV").textContent=o2u("phase",l.phase)|0;
   $("blur").value=l.blurAmt;$("blurV").textContent=l.blurAmt|0;
-  $("lx").value=l.lx;$("lxV").textContent=l.lx|0;
-  $("ly").value=l.ly;$("lyV").textContent=l.ly|0;
-  $("lscale").value=l.lscale;$("lscaleV").textContent=(+l.lscale).toFixed(2);
+  $("lx").value=o2u("lx",l.lx);$("lxV").textContent=o2u("lx",l.lx)|0;
+  $("ly").value=o2u("ly",l.ly);$("lyV").textContent=o2u("ly",l.ly)|0;
+  $("lscale").value=l.lscale;$("lscaleV").textContent=(+l.lscale).toFixed(1);
   $("dwell").value=S.dwell;$("dwellV").textContent=(+S.dwell).toFixed(1);
   $("bpm").value=S.bpm;$("bpc").value=S.beatsPerClip;$("bpcV").textContent=S.beatsPerClip;$("snapTog").classList.toggle("on",S.beatSnap);
   $("colmode").value=l.colmode;$("colorVar").value=S.colorVar;$("easing").value=l.easing;
