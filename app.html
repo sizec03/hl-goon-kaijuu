@@ -52,7 +52,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .app{display:grid;grid-template-columns:372px 1fr;grid-template-rows:auto 1fr auto;height:100%}
   .tlbar{grid-column:1 / span 2;grid-row:3;background:var(--sheet);border-top:none;padding:8px 16px 10px;display:flex;flex-direction:column;gap:7px;min-width:0}
   .tlbar-head{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-  .tlbar-title{order:-2;font:500 19px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
+  .tlbar-title{order:-2;font:500 13px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
   .tlbar-spacer{order:-1;flex:1 1 12px;min-width:8px}
   .tlbar .tlwrap{margin-top:0;height:96px}
   .tlbar-head .tlbar-clear{width:117px;padding:5px 0;font:500 10px/1 var(--mono);letter-spacing:-.01em;text-align:center;flex:0 0 auto}
@@ -226,7 +226,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .sw .chip::-webkit-color-swatch-wrapper{padding:0}
   .sw .chip::-webkit-color-swatch{border:none;border-radius:0}
   .sw .chip::-moz-color-swatch{border:none}
-  .sw .lab{font:400 13px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub);
+  .sw .lab{font:400 9px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub);
     text-transform:uppercase;flex:none;white-space:nowrap}
   .sw input.hex{flex:1;min-width:58px;text-align:right;border:none;border-bottom:1px solid transparent;background:transparent;
     font:400 11px/1 var(--mono);color:var(--ink);padding:2px 0;letter-spacing:-.01em}
@@ -353,10 +353,10 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   /* ===== PC(>940px) 文字サイズ調整：見出し75% / ヘッダーボタン90% ===== */
   @media (min-width:941px){
     .lab{font-size:14.25px}
-    .gh .lab,.sw .lab{font-size:11.7px}
+    .gh .lab{font-size:11.7px}
     body.mode-mv .cards{max-height:max(300px,calc(100vh - 340px))}
     .gh{margin-bottom:12px}
-    .tlbar-title{font-size:14.25px}
+    .tlbar-title{font-size:11.7px}
     #btnCreate,#btnShareLink,#btnShuffle,#btnRemix{font-size:11.7px!important;padding:11px 8px!important}
     #btnShareMv,#btnStockLyric,#mvQual{font-size:8.91px}
   }
