@@ -77,7 +77,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .brand{grid-column:1;grid-row:1;position:sticky;top:0;z-index:12;background:var(--sheet);
     padding:20px 22px 18px;border-right:1px solid var(--hair);border-bottom:1px solid var(--ink)}
   .brand .mk{display:flex;align-items:center;gap:6px;font:700 26px/1 var(--sans);letter-spacing:-.01em}
-  .brand .mk .mkhl{line-height:1}
+  .brand .mk .mkhl{height:0.72em;width:auto;display:block}
+  body.mode-mv .mkhl{filter:invert(1)}
   .brand .mk .mksub{font:400 10px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub)}
   .brand .mk em{font-style:normal;color:var(--accent)}
   .brand .meta{font:400 9.5px/1.4 var(--mono);letter-spacing:-.01em;color:var(--sub);
@@ -111,26 +112,28 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
 
   .grp{padding:40px 0 6px}
   .grp:first-of-type{padding-top:32px}
-  .grp>.gh{display:flex;align-items:baseline;justify-content:center;gap:9px;margin-bottom:16px}
+  .grp>.gh{display:flex;align-items:baseline;justify-content:center;gap:9px;margin-bottom:14px}
   .gh .lab{font:500 13px/1 var(--sans);letter-spacing:-.01em;text-transform:uppercase;color:var(--ink)}
   .gh .ln{display:none}
   .gh.low{padding-top:13px}
 
-  label.f{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 4px}
+  label.f{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 0}
   label.f .k{font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase}
   label.f .v{font:400 11px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
 
   textarea,input[type=text]{width:100%;background:transparent;border:1px solid var(--hair);
     color:var(--ink);border-radius:0;padding:9px 10px;font:400 13px/1.4 var(--sans);
     letter-spacing:-.01em;resize:vertical}
-  textarea{min-height:62px}
+  textarea{min-height:62px;margin:14px 0 0}
   textarea:focus,input:focus{outline:none;border-color:var(--ink)}
 
   input[type=range]{width:100%;-webkit-appearance:none;height:1px;background:var(--ink);
-    margin:11px 0;cursor:pointer}
+    margin:14px 0 0;cursor:pointer}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;
     background:var(--ink);border:0;cursor:pointer;border-radius:0;margin-top:0;box-shadow:none}
   input[type=range]::-moz-range-thumb{width:11px;height:11px;background:var(--ink);border:0;border-radius:0;box-shadow:none}
+  input[type=range]::-moz-range-track{height:1px;background:var(--ink);border:none}
+  input[type=range]::-moz-range-progress{height:1px;background:var(--ink);border:none}
   input[type=range].acc::-webkit-slider-thumb{background:var(--accent)}
 
   select{width:100%;background:transparent;border:1px solid var(--hair);color:var(--ink);
@@ -139,8 +142,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     background-repeat:no-repeat;background-position:right 10px center}
   select:focus{outline:none;border-color:var(--ink)}
 
-  .opt{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--hair);margin-bottom:15px}
-  select{margin-bottom:15px}
+  .opt{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--hair);margin:14px 0 0}
+  select{margin:14px 0 0}
   .opt>span{flex:1;text-align:center;padding:8px 6px;font:400 10.5px/1 var(--mono);
     letter-spacing:-.01em;color:var(--sub);cursor:pointer;border-right:1px solid var(--hair);
     text-transform:uppercase;user-select:none;transition:.08s}
@@ -190,6 +193,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .btn.fill{background:var(--ink);color:var(--paper)}
   #mvQual{position:relative;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;text-align:center;cursor:pointer;overflow:visible}
   #mvQual #mvQualLab{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;max-width:100%}
+  .mvq-caret{position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:7px;line-height:1;color:var(--sub);pointer-events:none}
   #mvQual .mvq-r{font-size:.72em;text-transform:none;opacity:.85;margin-left:1px}
   .mvq-list{position:absolute;left:-1px;right:-1px;top:calc(100% + 5px);background:var(--paper);border:1px solid var(--ink);display:none;flex-direction:column;z-index:60;box-shadow:0 6px 16px rgba(0,0,0,.2);color:var(--ink)}
   #mvQual.open .mvq-list{display:flex}
@@ -202,15 +206,18 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #btnShareMv{background:transparent;color:#fff;border-color:var(--accent);display:flex;align-items:center;justify-content:center}
   #btnPreviewMv{display:flex;align-items:center;justify-content:center}
   #btnShareMv:hover{background:var(--accent);color:#fff}
-  #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:none;
+  #recStatus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:60;display:none;
     align-items:center;background:#0d0d10;border:1px solid var(--accent);color:#fff;
     font:600 12px/1 var(--mono);letter-spacing:-.01em;padding:9px 16px;border-radius:22px;
     box-shadow:0 6px 22px rgba(0,0,0,.45)}
   #recStatus.on{display:flex}
   #recStatus::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;
-    background:#ff3b3b;margin-right:9px;animation:recblink 1s infinite}
+    background:var(--accent);margin-right:9px;animation:recblink 1s infinite}
   @keyframes recblink{50%{opacity:.2}}
-  .row{display:flex;gap:8px}.row>*{flex:1}
+  .row{display:flex;gap:8px;margin-top:14px}.row>*{flex:1}
+  .f+input[type=range]{margin-top:11px}
+  .f+select,.f+.opt,.f+textarea,.f+.row{margin-top:6px}
+  .row .f{margin-top:0}
   .row.g2{display:grid;grid-template-columns:1fr 1fr}
   .row.g3{display:grid;grid-template-columns:1fr 1fr 1fr}
   .panelfoot{margin-top:48px;padding-top:18px;border-top:none;font:500 11px/1.3 var(--mono);letter-spacing:-.01em;color:var(--sub)}
@@ -270,7 +277,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     letter-spacing:-.01em;color:var(--sub);text-transform:uppercase}
   .specmeta b{color:var(--ink);font-weight:500}
   .specmeta .tag{color:var(--accent)}
-  .canvaswrap{flex:1;display:flex;align-items:center;justify-content:center;padding:26px;min-height:380px}
+  .canvaswrap{position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:26px;min-height:380px}
   canvas#view{max-width:100%;max-height:100%;background:var(--stage)}
   .specfoot{display:flex;justify-content:space-between;align-items:flex-end;
     padding:14px 26px 18px;border-top:1px solid var(--hair)}
@@ -287,9 +294,10 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   @media (max-width:940px){
     .app{display:flex;flex-direction:column;height:auto}
     .tlbar-title{order:0;flex:0 0 100%;text-align:center;margin-top:-3px}
-    .tlzoom{order:0;flex:0 0 100%;width:100%;flex-direction:column;align-items:flex-start;gap:3px}
+    .tlbar-head .tlzoom{order:0;flex:0 0 100%;width:100%;flex-direction:column;align-items:flex-start;gap:3px}
     .tlzoom-btns{width:100%;gap:7px}
-    #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;text-align:center;padding:7px 0}
+    #tlZoomOut,#tlZoomIn{flex:1 1 0;width:auto;display:flex;align-items:center;justify-content:center;padding:3.5px 0}
+    .tlbar-head .tlzoom #tlZoomLbl{align-self:flex-start;text-align:left}
     .tlbar-spacer{order:0}
     .brand{border-right:none;z-index:30}
     .stage{order:1;position:sticky;top:var(--brandH,150px);z-index:20;
@@ -366,7 +374,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
 <div class="app">
   <div class="brand">
     <div class="brandrow">
-      <div class="mk"><span class="mkhl">H L</span><span class="mksub">Headbanging<br>Lyrics</span></div>
+      <div class="mk"><img class="mkhl" src="data:image/png;base64,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" alt="HL"><span class="mksub">Headbanging<br>Lyrics</span></div>
       <div class="iconbar">
         <div class="modeswitch" id="modeSwitch">
           <button class="modebtn on" data-mode="live" title="Lyric — 歌詞の一部をモーショングラフィックとして作る">Lyric</button>
@@ -376,8 +384,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       </div>
     </div>
     <div class="g-only">
-      <div class="patnum" id="patNum" style="margin-top:14px">PATTERN</div>
-      <div class="row g2" id="rollRow" style="margin-top:7px">
+      <div class="row g2" id="rollRow" style="margin-top:14px">
         <button class="btn fill" id="btnShuffle" style="padding:13px 8px;font-size:13px;letter-spacing:-.01em">SHUFFLE</button>
         <button class="btn fill" id="btnRemix" style="padding:13px 8px;font-size:13px;letter-spacing:-.01em">REMIX</button>
       </div>
@@ -385,20 +392,23 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <button class="btn" id="btnPlay">❚ ❚</button>
         <button class="btn acc" id="btnStockLyric" title="現在のLYRICを素材として保存">STOCK</button>
       </div>
+      <div class="transport" style="margin-top:14px">
+        <span style="white-space:nowrap;color:var(--sub);font:400 10px/1 var(--mono);letter-spacing:-.01em">素材ストック名</span>
+        <input type="text" id="segName" placeholder="例：GOON! / ヘドバン" style="flex:1;min-width:0;border:1px solid var(--hair);background:transparent;color:var(--ink);font:400 13px/1 var(--mono);padding:8px">
+      </div>
     </div>
     <div class="m-only" id="movieHead">
       <div class="row" style="margin-top:14px;display:flex;align-items:stretch;gap:8px;width:100%">
-        <button class="btn fill" id="btnCreate" style="flex:1 1 0;min-width:0;padding:13px 8px;font-size:13px;letter-spacing:-.01em">CREATE</button>
-        <button class="btn" id="btnShareLink" title="このツール／作品を共有" style="flex:1 1 0;min-width:0;padding:13px 8px;font-size:13px;letter-spacing:-.01em">SHARE</button>
+        <button class="btn fill" id="btnCreate" style="flex:1 1 0;min-width:0;padding:13px 8px;font-size:13px;letter-spacing:-.01em;text-align:center">CREATE</button>
       </div>
       <div class="row" style="margin-top:8px;display:flex;align-items:center;gap:8px;width:100%">
         <button class="btn" id="btnPreviewMv" title="再生／停止" style="flex:1 1 0;min-width:0">▶</button>
-        <div class="btn mvq" id="mvQual" data-val="normal" role="button" tabindex="0"><span id="mvQualLab">NORMAL<span class="mvq-r">（720p）</span></span><div class="mvq-list"><div class="mvq-o" data-val="small">SMALL<span class="mvq-r">（480p）</span></div><div class="mvq-o" data-val="normal">NORMAL<span class="mvq-r">（720p）</span></div><div class="mvq-o" data-val="high">HIGH<span class="mvq-r">（1080p）</span></div></div></div>
+        <div class="btn mvq" id="mvQual" data-val="high" role="button" tabindex="0"><span id="mvQualLab">1080p</span><span class="mvq-caret">▼</span><div class="mvq-list"><div class="mvq-o" data-val="small">480p</div><div class="mvq-o" data-val="normal">720p</div><div class="mvq-o" data-val="high">1080p</div></div></div>
         <button class="btn" id="btnShareMv" title="タイムラインのLYRICと音源を書き出す" style="flex:1 1 0;min-width:0">DOWNLOAD</button>
       </div>
       <div class="transport mvtrans" id="mvTrans" style="margin-top:9px">
-        <input type="range" id="mvScrub" min="0" max="1000" value="0">
         <span class="tt" id="mvTime">0:00 / 0:00</span>
+        <input type="range" id="mvScrub" min="0" max="1000" value="0">
       </div>
     </div>
   </div>
@@ -416,7 +426,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <input type="range" id="track" min="-25" max="100" step="5" value="6">
       <label class="f"><span class="k">leading 行間</span><span class="v" id="leadV">1.15</span></label>
       <input type="range" id="lead" min="0.8" max="2" step="0.1" value="1.15">
-      <label style="display:flex;align-items:center;gap:7px;margin:9px 0 1px;font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase;cursor:pointer;user-select:none"><input type="checkbox" id="wordAll" style="width:13px;height:13px;cursor:pointer;margin:0;flex:none">全レイヤーに適用（テキスト、サイズ、字間、行間）</label>
+      <label style="display:flex;align-items:center;gap:7px;margin:14px 0 0;font:400 9.5px/1 var(--mono);letter-spacing:-.01em;color:var(--sub);text-transform:uppercase;cursor:pointer;user-select:none"><input type="checkbox" id="wordAll" style="width:13px;height:13px;cursor:pointer;margin:0;flex:none">全レイヤーに適用（テキスト、サイズ、字間、行間）</label>
     </section>
 
 
@@ -540,13 +550,13 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <section class="grp">
       <div class="gh"><span class="lab">SPACE</span><span class="ln"></span></div>
       <div class="opt wrap" id="layerList"></div>
-      <div class="row" style="margin-top:8px">
+      <div class="row" style="margin-top:8px;margin-bottom:15px">
         <button class="btn" id="btnLayerAdd">+ layer</button>
         <button class="btn" id="btnLayerDel">delete</button>
       </div>
-      <label class="f" style="margin-top:10px"><span class="k">拡大</span><span class="v" id="lscaleV">1.00</span></label>
+      <label class="f"><span class="k">拡大</span><span class="v" id="lscaleV">1.00</span></label>
       <input type="range" id="lscale" min="0.5" max="10" step="0.5" value="1">
-      <div class="row g2" style="margin-top:10px;gap:14px">
+      <div class="row g2" style="gap:14px">
         <div><label class="f"><span class="k">左右</span><span class="v" id="lxV">0</span></label>
           <input type="range" id="lx" min="-200" max="200" step="5" value="0"></div>
         <div><label class="f"><span class="k">上下</span><span class="v" id="lyV">0</span></label>
@@ -556,10 +566,29 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <div class="tog" id="moveTog"><span class="box"></span>MOVE 移動</div>
       </div>
       <div class="secbody" id="moveBody">
-      <label class="f"><span class="k">開始（左右）</span><span class="v" id="mvX0V">0.80</span></label>
-      <input type="range" id="mvX0" min="-5" max="5" step="0.5" value="0.8">
-      <label class="f"><span class="k">終了（左右）</span><span class="v" id="mvX1V">-4.70</span></label>
-      <input type="range" id="mvX1" min="-5" max="5" step="0.5" value="-4.7">
+      <div class="row" style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <span class="zoomn" id="mvStepPrev">◀</span>
+        <span class="hint" id="mvStepLbl" style="flex:1;text-align:center;margin:0">STEP 1 / 2</span>
+        <span class="zoomn" id="mvStepNext">▶</span>
+        <span class="zoomn" id="mvStepAdd">＋</span>
+        <span class="zoomn" id="mvStepDel" style="padding:5px 8px">delete</span>
+      </div>
+      <label class="f"><span class="k">左右（X）</span><span class="v" id="msXV">0.0</span></label>
+      <input type="range" id="msX" min="-5" max="5" step="0.5" value="0">
+      <label class="f"><span class="k">上下（Y）</span><span class="v" id="msYV">0.0</span></label>
+      <input type="range" id="msY" min="-5" max="5" step="0.5" value="0">
+      <label class="f"><span class="k">拡大</span><span class="v" id="msSV">1.0</span></label>
+      <input type="range" id="msS" min="0.1" max="5" step="0.1" value="1">
+      <label class="f"><span class="k">回転</span><span class="v" id="msRV">0°</span></label>
+      <input type="range" id="msR" min="-180" max="180" step="5" value="0">
+      <div id="msTimeBox">
+        <label class="f"><span class="k">尺（短い＝速い）</span><span class="v" id="msDV">1.0</span></label>
+        <input type="range" id="msD" min="0.5" max="10" step="0.5" value="1">
+        <label class="f"><span class="k">イージング</span></label>
+        <div class="opt" id="msEase">
+          <span data-ease="linear" class="on">一定</span><span data-ease="in">ためて加速</span><span data-ease="out">スッと停止</span>
+        </div>
+      </div>
       </div>
       <div style="display:flex;gap:18px;margin-top:6px">
         <div class="tog" id="blurTog"><span class="box"></span>LIGHT 光</div>
@@ -579,7 +608,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <label class="f"><span class="k">pixel 解像度</span><span class="v" id="lofiPixV">3</span></label>
       <input type="range" id="lofiPix" min="1" max="25" step="1" value="3">
       <label class="f"><span class="k">noise ノイズ</span><span class="v" id="lofiNoiseV">25</span></label>
-      <input type="range" id="lofiNoise" min="0" max="100" step="5" value="25">
+      <input type="range" id="lofiNoise" min="0" max="100" step="5" value="25" style="margin-bottom:12px">
       <div class="tog on" id="fpsTog"><span class="box"></span>コマ落とし</div>
       <label class="f"><span class="k">fps コマ数</span><span class="v" id="fpsRateV">28</span></label>
       <input type="range" id="fpsRate" min="1" max="50" step="1" value="28">
@@ -591,7 +620,6 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <section class="grp" id="secScene">
       <div class="gh"><span class="lab">LYRIC STOCK</span><span class="ln"></span></div>
 
-      <div id="recStatus"></div>
       <audio id="audio" preload="auto" playsinline></audio>
       <div class="transport" id="transport" style="display:none">
         <span class="pp" id="ppBtn">▶</span>
@@ -599,15 +627,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
         <span class="tt" id="ttime">0:00 / 0:00</span>
       </div>
 
-      <div class="g-only">
-      <label class="f" style="margin-top:14px"><span class="k">NAME 素材名</span></label>
-      <input type="text" id="segName" placeholder="例：GOON! / ヘドバン" style="width:100%;border:1px solid var(--hair);background:transparent;color:var(--ink);font:400 13px/1 var(--mono);padding:8px;margin-top:4px">
-      <div class="row" style="margin-top:8px">
-        <button class="btn fill" id="btnAddSeg">＋ 素材を保存</button>
-      </div>
-      </div>
 
-      <label class="f" style="margin-top:14px"><span class="k">LYRIC 素材ストック</span></label>
+      <label class="f"><span class="k">LYRIC 素材ストック</span></label>
       <div class="cards" id="cards"></div>
       <div class="m-only">
       <div id="impPanel" style="display:none;margin-top:8px;border:1px solid var(--hair);padding:11px">
@@ -628,12 +649,12 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       </div>
 
       <div style="display:none">
-      <label class="f" style="margin-top:12px"><span class="k">tap 採時 ( space )</span></label>
+      <label class="f"><span class="k">tap 採時 ( space )</span></label>
       <div class="row">
         <button class="btn acc" id="btnTap">ここで区切る</button>
         <button class="btn" id="btnTapReset">採時リセット</button>
       </div>
-      <label class="f" style="margin-top:14px"><span class="k">tempo BPM（タップ/手入力）</span></label>
+      <label class="f"><span class="k">tempo BPM（タップ/手入力）</span></label>
       <div class="row" style="margin-top:0">
         <input type="number" id="bpm" min="40" max="300" step="0.1" value="120" style="flex:none;width:82px;border:1px solid var(--hair);background:transparent;color:var(--ink);font:400 13px/1 var(--mono);padding:7px;text-align:center">
         <button class="btn" id="btnTapTempo">タップでBPM</button>
@@ -644,7 +665,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
       <input type="range" id="bpc" min="1" max="32" step="1" value="8">
       <button class="btn" id="btnDownbeat" style="width:100%;margin-top:8px">今を頭拍に（offset）</button>
       </div>
-      <label class="f" style="margin-top:14px"><span class="k">dwell 表示秒（拍スナップOFF時）</span><span class="v" id="dwellV">3.0</span></label>
+      <label class="f"><span class="k">dwell 表示秒（拍スナップOFF時）</span><span class="v" id="dwellV">3.0</span></label>
       <input type="range" id="dwell" min="0.5" max="8" step="0.1" value="3">
       </div>
 
@@ -662,7 +683,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <div class="specmeta">
       <span class="tag" id="mSeg"></span>
     </div>
-    <div class="canvaswrap"><canvas id="view" width="1280" height="720"></canvas></div>
+    <div class="canvaswrap"><canvas id="view" width="1280" height="720"></canvas><div id="recStatus"></div></div>
   </section>
   <div class="tlbar m-only" id="tlbar">
     <div class="tlbar-head">
@@ -980,7 +1001,7 @@ function defaultLayer(){return{
   stroke:"solid",weight:5,inline:9,contrast:90,cap:"spike",offOn:false,offDist:0,offW:8,offStr:1,offNoise:0,
   colmode:"chrome",fg:"#d7dce2",fg2:"#9aa6b2",mono:false,
   motions:new Set(["bangD"]),speed:7,amp:2,easing:"ease",phase:.2,headMove:true,headShake:false,
-  blur:false,blurAmt:4,lx:0,ly:0,lscale:1};}
+  blur:false,blurAmt:4,lx:0,ly:0,lscale:1,move:{on:false,sel:0,steps:[{x:0.8,y:0,s:1,r:0},{x:-4.7,y:0,s:1,r:0,dur:1,ease:"linear"}]}};}
 
 /* FRAME内クレジット（参考動画の構成を踏襲・1280×720（16:9））
    クレジットはBOLDONSEで控えめに。上:HL (Headbanging Lyrics) by GOON!KAIJUU! ／
@@ -994,7 +1015,7 @@ function frameLayer(o){return Object.assign(defaultLayer(),{
 },o,{motions:new Set(o.motions||[])});}
 function buildFrameLayers(){return[
   frameLayer({text:"GOON! KAIJUU",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"left",lx:-4,swayAmp:0,ly:-314,lscale:.017,track:1,seed:7001}),
-  frameLayer({text:"HL_Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:6,ly:296,lscale:.017,track:1,seed:7003})
+  frameLayer({text:"HL_Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:2,ly:296,lscale:.017,track:1,seed:7003})
 ];}
 const FRAME_LAYERS=buildFrameLayers();
 
@@ -1002,10 +1023,12 @@ const S={
   bg:"#0e0e11",disp:"text",colorVar:0,
   layers:[defaultLayer()],active:0,playing:true,
   fx:new Set(),fxCount:1,fxThick:1,fxJitter:1,mode:"mv",trans:"clockwipe",transDur:520,
-  frame:{on:true,thick:22,speed:1,dir:1,colIdx:0,marqSize:14,marqCount:6},frameLock:false,lofi:{on:true,all:true,pixel:3,noise:0.15},fps:{on:true,rate:28},move:{on:false,x0:0.8,x1:-4.7},
+  frame:{on:true,thick:22,speed:1,dir:1,colIdx:0,marqSize:14,marqCount:6},frameLock:false,lofi:{on:true,all:true,pixel:3,noise:0.15},fps:{on:true,rate:28},move:{on:false,sel:0,x0:0.8,x1:-4.7,steps:[{x:0.8,y:0,s:1,r:0},{x:-4.7,y:0,s:1,r:0,dur:1,ease:"linear"}]},
   cards:[],dwell:3,lyric:{on:false,tapPtr:0},bpm:120,beatOff:0,beatsPerClip:8,beatSnap:false,timeline:[]
 };
 const cur=()=>S.layers[S.active];
+function _defMove(){return {on:false,sel:0,steps:[{x:0.8,y:0,s:1,r:0},{x:-4.7,y:0,s:1,r:0,dur:1,ease:"linear"}]};}
+try{Object.defineProperty(S,"move",{configurable:true,get:function(){var L=cur();if(!L)return _defMove();if(!L.move)L.move=_defMove();return L.move;},set:function(v){var L=cur();if(L)L.move=v;}});}catch(e){}
 
 const LYRICS=`GOON GOON
 GOON GOON KAIJU
@@ -1367,13 +1390,12 @@ function drawTransition(tf,p,W,H){
     ctx.strokeStyle="rgba(255,255,255,.85)";ctx.lineWidth=2;ctx.strokeRect(x0,y0,bw,bh);}
   ctx.restore();
 }
+function _stepState(st,p){var n=st.length;if(!n)return{x:0,y:0,s:1,r:0};if(n<2){var o=st[0]||{};return{x:o.x||0,y:o.y||0,s:o.s!=null?o.s:1,r:o.r||0};}var tot=0,i;for(i=1;i<n;i++)tot+=Math.max(0.001,st[i].dur!=null?st[i].dur:1);var tgt=p*tot,acc=0;for(i=1;i<n;i++){var d=Math.max(0.001,st[i].dur!=null?st[i].dur:1);if(tgt<=acc+d||i===n-1){var lp=(tgt-acc)/d;lp=lp<0?0:lp>1?1:lp;var e=st[i].ease,ee=e==="in"?lp*lp:e==="out"?1-(1-lp)*(1-lp):lp;var a=st[i-1],b=st[i];return{x:(a.x||0)+ee*((b.x||0)-(a.x||0)),y:(a.y||0)+ee*((b.y||0)-(a.y||0)),s:(a.s!=null?a.s:1)+ee*((b.s!=null?b.s:1)-(a.s!=null?a.s:1)),r:(a.r||0)+ee*((b.r||0)-(a.r||0))};}acc+=d;}var L=st[n-1];return{x:L.x||0,y:L.y||0,s:L.s!=null?L.s:1,r:L.r||0};}
 function _scrollEase(p){
-  /* ④(065)の大スイープ: ため(逆引き)→鋭く発進→深い低速クロール(緩急)→鋭く再加速→抜け切る */
-  if(p<0.07){const u=p/0.07;return -0.025*(u*u*(3-2*u));}                    /* ため: 逆方向へ少し引く */
-  if(p<0.26){const u=(p-0.07)/0.19;return -0.025+0.395*(1-Math.pow(1-u,2.5));}/* 引いた所から鋭く発進→高速(キレ) */
-  if(p<0.40){const u=(p-0.26)/0.14;return 0.37+0.04*u;}                      /* 一回ぐっと遅く: 深い低速クロール */
-  if(p<0.86){const u=(p-0.40)/0.46;return 0.41+0.47*(1-Math.pow(1-u,2.3));}  /* 低速から鋭く再加速(キレ) */
-  const u=(p-0.86)/0.14;return 0.88+0.12*(1-(1-u)*(1-u));}                   /* 末尾: 抜け切る */
+  /* 右→左: 速→遅→速 を正弦で滑らかに繋ぐ（約 0-1/3:44% / 中央:12% / 2/3-1:44% を稼ぐ） */
+  p=p<0?0:p>1?1:p;
+  return p+0.12*Math.sin(2*Math.PI*p);
+}                   /* 末尾: 抜け切る */
 /* per-item振付の変位: 逆方向に固定量のため→鋭く発進してease-out(キレ) */
 function _dispKire(p,tx){
   if(p<=0)return 0; if(p>=1)return tx;
@@ -1426,7 +1448,7 @@ function render(now){
   const skel=S.disp==="skeleton";
   /* 描画は奥→手前。L1 を最前面にするため逆順で描き、SPACE effect は最前面(L1)に効かせる */
   ctx.save();
-  if(S.move&&S.move.on){ if(!S.scatter||S.scatter._move) S.scatter={_move:true,bleed:true,items:[{x:0.5,y:0.5,s:1,r:0}],scroll:{x0:S.move.x0,x1:S.move.x1,clipRel:true}}; }
+  if(S.move&&S.move.on){ if(!S.scatter||S.scatter._move) S.scatter={_move:true,bleed:true,items:[{x:0.5,y:0.5,s:1,r:0}],scroll:{steps:(S.move.steps&&S.move.steps.length>=2?S.move.steps:null),x0:S.move.x0,x1:S.move.x1,clipRel:true}}; }
   else if(S.scatter&&S.scatter._move){ S.scatter=null; }   /* MOVE OFFで自動scatterを解除 */
   if(S.scatter&&S.scatter.items&&S.scatter.items.length){           /* スキャッター: ユニットを毎フレーム1回だけタイルへ焼き、各セルへ転写（glyph描画は items分の1） */
     let _tile=S.scatter._tile;
@@ -1435,17 +1457,17 @@ function render(now){
     const _tc=_tile.getContext("2d");
     _tc.setTransform(1,0,0,1,0,0);_tc.clearRect(0,0,W,H);
     for(let i=S.layers.length-1;i>=0;i--)renderLayer(S.layers[i],time,W,H,skel,_tc);   /* 焼きは1回 */
-    let _sx=0,_casc=null,_mt=masterTime();const _rel=_mt-_clipActiveMT;
+    let _sx=0,_sy=0,_smul=1,_rot=0,_casc=null,_mt=masterTime();const _rel=_mt-_clipActiveMT;
     if(S.scatter.scroll){const _sc=S.scatter.scroll,_d=Math.max(0.1,_sc.end-_sc.start);
       if(_sc.cascade){_casc=_sc;}
       else{let _p;
-        if(_sc.clipRel){const _cs=(lyricActive>=0&&S.timeline[lyricActive])?S.timeline[lyricActive].start:0;
+        if(_sc.clipRel){if(S.mode==="live"){_p=(Math.max(0,_mt)%3)/3;}else{const _cs=(lyricActive>=0&&S.timeline[lyricActive])?S.timeline[lyricActive].start:0;
           const _ce=(S.timeline[lyricActive+1])?S.timeline[lyricActive+1].start:(_cs+3);
-          _p=(_mt-_cs)/Math.max(0.1,_ce-_cs);}   /* MOVE: クリップ尺で sweep */
+          _p=(_mt-_cs)/Math.max(0.1,_ce-_cs);}}   /* MOVE: クリップ尺で sweep */
         else{_p=_rel/_d;}
-        _p=_p<0?0:_p>1?1:_p;const _e=_scrollEase(_p);_sx=((_sc.x0!=null?_sc.x0:-2.6)+_e*((_sc.x1!=null?_sc.x1:0.8)-(_sc.x0!=null?_sc.x0:-2.6)))*W;}}
+        _p=_p<0?0:_p>1?1:_p;if(_sc.steps&&_sc.steps.length>=2){var _st=_stepState(_sc.steps,_p);_sx=_st.x*W;_sy=_st.y*H;_smul=_st.s;_rot=(_st.r||0)*Math.PI/180;}else{const _e=_scrollEase(_p);_sx=((_sc.x0!=null?_sc.x0:-2.6)+_e*((_sc.x1!=null?_sc.x1:0.8)-(_sc.x0!=null?_sc.x0:-2.6)))*W;}}}
     for(const _it of S.scatter.items){
-      let _ix=_it.x*W+_sx,_iy=_it.y*H;
+      let _ix=_it.x*W+_sx,_iy=_it.y*H+_sy;
       if(_casc){const _t0=(_it.t0!=null?_it.t0:_casc.start+(_it.d||0)*(_casc.stagger!=null?_casc.stagger:1.2));
         const _du=Math.max(0.1,_it.mdur!=null?_it.mdur:(_casc.dur!=null?_casc.dur:1.0));
         const _tx=(_it.tx!=null?_it.tx:(_casc.x1!=null?_casc.x1:-2.4));
@@ -1453,7 +1475,7 @@ function render(now){
         _ix=(_it.x+_dispKire(_p,_tx))*W;
         const _ty=(_it.ty!=null?_it.ty:0);_iy=(_it.y+_dispKire(_p,_ty))*H;}   /* per-item振付: ため→キレで移動(縦txも対応) */
       ctx.save();
-      ctx.translate(_ix,_iy);ctx.rotate(_it.r||0);ctx.scale(_it.s||1,_it.s||1);ctx.translate(-W/2,-H/2);
+      ctx.translate(_ix,_iy);ctx.rotate((_it.r||0)+_rot);ctx.scale((_it.s||1)*_smul,(_it.s||1)*_smul);ctx.translate(-W/2,-H/2);
       ctx.drawImage(_tile,0,0);                                   /* 転写（安価） */
       ctx.restore();
     }
@@ -1490,7 +1512,7 @@ function complementaryText(hex){const a=hexToHsl(hex),ch=(a[0]+180)%360,cl=a[2]>
 function drawBandText(W,H,t,F,time,txCol){
   const N=Math.max(1,Math.round(F.marqCount||6));
   const m=t/2,Wc=W-t,Hc=H-t,P=2*(Wc+Hc); if(P<=0)return;
-  const fs=Math.max(4,Math.min(F.marqSize||14,t*0.78));
+  const fs=Math.max(4,Math.min((F.marqSize||14)*(H/720),t*0.78));
   const txt="HEAVY METAL OCEANS";
   ctx.save();
   ctx.font=`${fs}px "Boldonse"`;ctx.fillStyle=txCol||"rgba(255,255,255,.92)";
@@ -1624,13 +1646,10 @@ bindRange("blur",x=>cur().blurAmt=x,x=>x|0);
 bindRange("lx",x=>cur().lx=x,x=>x|0);
 bindRange("ly",x=>cur().ly=x,x=>x|0);
 bindRange("lscale",x=>cur().lscale=x,x=>x.toFixed(1));
-function syncMove(){$("moveTog").classList.toggle("on",S.move.on);$("moveBody").classList.toggle("dim",!S.move.on);
-  $("mvX0").value=S.move.x0;$("mvX0V").textContent=S.move.x0.toFixed(1);
-  $("mvX1").value=S.move.x1;$("mvX1V").textContent=S.move.x1.toFixed(1);}
+function syncMove(){var st=(S.move.steps&&S.move.steps.length>=2)?S.move.steps:(S.move.steps=[{x:0.8,y:0,s:1,r:0},{x:-4.7,y:0,s:1,r:0,dur:1,ease:"linear"}]);if(S.move.sel==null||S.move.sel<0)S.move.sel=0;if(S.move.sel>=st.length)S.move.sel=st.length-1;$("moveTog").classList.toggle("on",S.move.on);$("moveBody").classList.toggle("dim",!S.move.on);var k=S.move.sel,c=st[k];$("mvStepLbl").textContent="STEP "+(k+1)+" / "+st.length+(k===0?"（開始）":"");$("msX").value=(c.x!=null?c.x:0);$("msXV").textContent=(c.x!=null?c.x:0).toFixed(1);$("msY").value=(c.y!=null?c.y:0);$("msYV").textContent=(c.y!=null?c.y:0).toFixed(1);$("msS").value=(c.s!=null?c.s:1);$("msSV").textContent=(c.s!=null?c.s:1).toFixed(1);$("msR").value=(c.r!=null?c.r:0);$("msRV").textContent=Math.round(c.r||0)+"°";var first=(k===0);$("msTimeBox").style.display=first?"none":"";if(!first){$("msD").value=(c.dur!=null?c.dur:1);$("msDV").textContent=(c.dur!=null?c.dur:1).toFixed(1);var ez=c.ease||"linear",os=$("msEase").querySelectorAll("span");for(var z=0;z<os.length;z++)os[z].classList.toggle("on",os[z].dataset.ease===ez);}$("mvStepDel").style.opacity=st.length>2?"1":".35";}
 tog("moveTog",()=>S.move.on,v=>{S.move.on=v;});
 $("moveTog").addEventListener("click",()=>{$("moveBody").classList.toggle("dim",!S.move.on);});
-bindRange("mvX0",x=>S.move.x0=x,x=>x.toFixed(1));
-bindRange("mvX1",x=>S.move.x1=x,x=>x.toFixed(1));
+(function(){function _cur(){return S.move.steps[S.move.sel]||S.move.steps[0];}function _bindS(id,vid,prop,fmt){var el=$(id);if(!el)return;el.oninput=function(){var v=parseFloat(el.value);_cur()[prop]=v;$(vid).textContent=fmt(v);};}_bindS("msX","msXV","x",function(v){return v.toFixed(1);});_bindS("msY","msYV","y",function(v){return v.toFixed(1);});_bindS("msS","msSV","s",function(v){return v.toFixed(1);});_bindS("msR","msRV","r",function(v){return Math.round(v)+"°";});_bindS("msD","msDV","dur",function(v){return v.toFixed(1);});var ee=$("msEase");if(ee)ee.addEventListener("click",function(e){var s=e.target.closest("span[data-ease]");if(!s)return;_cur().ease=s.dataset.ease;var os=ee.querySelectorAll("span");for(var z=0;z<os.length;z++)os[z].classList.toggle("on",os[z]===s);});function _go(d){S.move.sel=Math.max(0,Math.min(S.move.steps.length-1,S.move.sel+d));syncMove();}var pv=$("mvStepPrev");if(pv)pv.onclick=function(){_go(-1);};var nx=$("mvStepNext");if(nx)nx.onclick=function(){_go(1);};var ad=$("mvStepAdd");if(ad)ad.onclick=function(){var st=S.move.steps,k=S.move.sel,c=st[k]||st[0];st.splice(k+1,0,{x:c.x!=null?c.x:0,y:c.y!=null?c.y:0,s:c.s!=null?c.s:1,r:c.r!=null?c.r:0,dur:1,ease:"linear"});S.move.sel=k+1;syncMove();};var dl=$("mvStepDel");if(dl)dl.onclick=function(){var st=S.move.steps;if(st.length<=2)return;st.splice(S.move.sel,1);if(S.move.sel>=st.length)S.move.sel=st.length-1;syncMove();};})();
 tog("lofiTog",()=>S.lofi.on,v=>S.lofi.on=v);
 tog("lofiAllTog",()=>S.lofi.all,v=>S.lofi.all=v);
 bindRange("lofiPix",x=>S.lofi.pixel=x|0,x=>x|0);
@@ -1639,7 +1658,11 @@ tog("fpsTog",()=>S.fps.on,v=>S.fps.on=v);
 bindRange("fpsRate",x=>S.fps.rate=x|0,x=>x|0);
 bindRange("dwell",x=>S.dwell=x,x=>x.toFixed(1));
 
-$("text").oninput=e=>{cur().text=e.target.value.toUpperCase();
+let segNameDirty=false;
+function reflectSegName(){const sn=$("segName");if(sn&&!segNameDirty)sn.value=(cur().text||"");}
+if($("segName")){$("segName").addEventListener("input",function(){segNameDirty=true;});}
+reflectSegName();
+$("text").oninput=e=>{cur().text=e.target.value.toUpperCase();reflectSegName();
   if(wordAll)S.layers.forEach(x=>x.text=cur().text);
   if(cur().text.split("\n").length>30)note("最大30行");
   else if(/[^\x20-\x7E\n\r\t]/.test(cur().text))note("英数字で入力してください");};
@@ -1671,7 +1694,7 @@ tog("shatterTog",()=>!!cur().shatter,v=>cur().shatter=v);
 function setMode(m){S.mode=m;
   document.body.classList.toggle("mode-mv",m==="mv");
   document.body.classList.toggle("mode-live",m==="live");
-  $("modeSwitch").querySelectorAll("[data-mode]").forEach(s=>s.classList.toggle("on",s.dataset.mode===m));
+  $("modeSwitch").querySelectorAll("[data-mode]").forEach(s=>s.classList.toggle("on",s.dataset.mode===m));requestAnimationFrame(fitBrand);
   renderCards();renderTimeline();
   if(m==="mv"&&!tlUserZoomed)requestAnimationFrame(fitZoom50);
   if(m==="live"&&S.lyric){S.lyric.on=false;}}
@@ -1681,7 +1704,7 @@ $("modeSwitch").querySelectorAll("[data-mode]").forEach(sp=>sp.onclick=()=>{if(s
 function fitBrand(){const b=document.querySelector(".brand");if(!b)return;
   if(window.matchMedia("(max-width:940px)").matches)document.documentElement.style.setProperty("--brandH",b.offsetHeight+"px");
   else document.documentElement.style.removeProperty("--brandH");}
-window.addEventListener("resize",fitBrand);window.addEventListener("load",fitBrand);setTimeout(fitBrand,60);
+window.addEventListener("resize",fitBrand);window.addEventListener("load",fitBrand);setTimeout(fitBrand,60);try{var _brEl=document.querySelector(".brand");if(_brEl&&window.ResizeObserver){new ResizeObserver(function(){fitBrand();}).observe(_brEl);}}catch(e){}
 
 /* swatches */
 function swatch(hexId,colId,getC,setC){
@@ -1950,7 +1973,7 @@ function sanitizeLayer(l){
   o.weight=_num(l.weight,1,90,D.weight);o.inline=_num(l.inline,1,14,D.inline)|0;o.contrast=_num(l.contrast,0,100,D.contrast);
   o.speed=_num(l.speed,0,10,D.speed);o.amp=_num(l.amp,0,3.5,D.amp);o.phase=_num(l.phase,0,1.4,D.phase);
   o.blurAmt=_num(l.blurAmt,0,24,D.blurAmt);o.lx=_num(l.lx,-4000,4000,0);o.ly=_num(l.ly,-4000,4000,0);
-  o.lscale=_num(l.lscale,.05,12,D.lscale);
+  o.lscale=_num(l.lscale,.05,12,D.lscale);o.move=(function(mv){var dm={on:false,sel:0,steps:[{x:0.8,y:0,s:1,r:0},{x:-4.7,y:0,s:1,r:0,dur:1,ease:"linear"}]};if(!mv||typeof mv!=="object")return dm;var steps=(Array.isArray(mv.steps)&&mv.steps.length>=2)?mv.steps.map(function(s){return{x:_num(s&&s.x,-6,6,0),y:_num(s&&s.y,-6,6,0),s:_num(s&&s.s,0.05,8,1),r:_num(s&&s.r,-360,360,0),dur:_num(s&&s.dur,0.1,20,1),ease:(s&&s.ease)||"linear"};}):dm.steps;return{on:!!mv.on,sel:0,steps:steps};})(l.move);
   o.stroke=_pick(l.stroke,["solid","outline","inline"],D.stroke);
   o.cap=_pick(l.cap,["round","butt","square","serif","spike"],D.cap);
   o.dash=_pick(l.dash,["none","dashed","dotted"],D.dash);
@@ -1975,11 +1998,11 @@ function sanitizeSnapshot(d){
   let scatter=null;
   if(d.scatter&&typeof d.scatter==="object"&&Array.isArray(d.scatter.items)&&d.scatter.items.length){
     scatter={bleed:!!d.scatter.bleed,items:d.scatter.items.slice(0,256).map(it=>({x:_num(it&&it.x,-1.5,5.5,0.5),y:_num(it&&it.y,-0.5,1.5,0.5),s:_num(it&&it.s,0.05,3,1),r:_num(it&&it.r,-3.2,3.2,0),d:_num(it&&it.d,0,1,0),t0:_num(it&&it.t0,0,100000,0),mdur:_num(it&&it.mdur,0.05,20,1),tx:_num(it&&it.tx,-12,12,-2.4),ty:_num(it&&it.ty,-12,12,0)}))};
-    if(d.scatter.scroll&&typeof d.scatter.scroll==="object"){const _sc=d.scatter.scroll;scatter.scroll={start:_num(_sc.start,0,100000,0),end:_num(_sc.end,0,100000,0),x0:_num(_sc.x0,-8,8,-2.6),x1:_num(_sc.x1,-8,8,0.8),cascade:!!_sc.cascade,clipRel:!!_sc.clipRel,stagger:_num(_sc.stagger,0,10,1.2),dur:_num(_sc.dur,0.1,10,1.0)};}
+    if(d.scatter.scroll&&typeof d.scatter.scroll==="object"){const _sc=d.scatter.scroll;scatter.scroll={start:_num(_sc.start,0,100000,0),end:_num(_sc.end,0,100000,0),x0:_num(_sc.x0,-8,8,-2.6),x1:_num(_sc.x1,-8,8,0.8),cascade:!!_sc.cascade,clipRel:!!_sc.clipRel,stagger:_num(_sc.stagger,0,10,1.2),dur:_num(_sc.dur,0.1,10,1.0),steps:((Array.isArray(_sc.steps)&&_sc.steps.length>=2)?_sc.steps:((d.move&&Array.isArray(d.move.steps)&&d.move.steps.length>=2)?d.move.steps:null))};}
   }
   return{bg:_col(d.bg,S.bg),disp:_pick(d.disp,["text","skeleton"],"text"),fx,
     fxCount:_num(d.fxCount??d.fxStrength,0,10,1),fxThick:_num(d.fxThick??d.fxStrength,0,10,1),fxJitter:_num(d.fxJitter??d.fxStrength,0,10,1),
-    frame,layers,scatter,move:{on:!!(d.move&&d.move.on),x0:_num(d.move&&d.move.x0,-6,6,0.8),x1:_num(d.move&&d.move.x1,-6,6,-4.7)},active:Math.min(Math.max(0,_num(d.active,0,64,0)|0),layers.length-1)};}
+    frame,layers,scatter,move:{on:!!(d.move&&d.move.on),sel:0,x0:_num(d.move&&d.move.x0,-6,6,0.8),x1:_num(d.move&&d.move.x1,-6,6,-4.7),steps:(Array.isArray(d.move&&d.move.steps)&&d.move.steps.length>=2?d.move.steps.map(function(s){return{x:_num(s&&s.x,-6,6,0),y:_num(s&&s.y,-6,6,0),s:_num(s&&s.s,0.05,8,1),r:_num(s&&s.r,-360,360,0),dur:_num(s&&s.dur,0.1,20,1),ease:(s&&s.ease)||"linear"};}):[{x:_num(d.move&&d.move.x0,-6,6,0.8),y:0,s:1,r:0},{x:_num(d.move&&d.move.x1,-6,6,-4.7),y:0,s:1,r:0,dur:1,ease:"linear"}])},active:Math.min(Math.max(0,_num(d.active,0,64,0)|0),layers.length-1)};}
 function sanitizeSegments(arr){
   if(!Array.isArray(arr))return[];
   return arr.slice(0,300).map(c=>({name:_str(c&&(c.name||c.text),200,""),text:_str(c&&c.text,800,""),pattern:_str(c&&c.pattern,16,""),
@@ -1999,7 +2022,7 @@ function addSeg(name,setText){const snap=snapshot();
   if(setText&&snap.layers[snap.active])snap.layers[snap.active].text=nm.toUpperCase();
   const dispText=((setText?nm:(cur().text||nm))+"").toUpperCase();
   S.cards.push({name:nm,text:dispText,pattern:patternCode(cur().seed),start:null,data:snap});}
-$("btnAddSeg").onclick=()=>{const nm=(($("segName")&&$("segName").value)||"").trim()||cur().text;addSeg(nm,false);if($("segName"))$("segName").value="";renderCards();renderTimeline();note("素材を保存");};
+if($("btnAddSeg"))$("btnAddSeg").onclick=()=>{const nm=(($("segName")&&$("segName").value)||"").trim()||cur().text;addSeg(nm,false);segNameDirty=false;if($("segName"))$("segName").value=(cur().text||"");renderCards();renderTimeline();note("素材を保存");};
 if($("btnStockLyric"))$("btnStockLyric").onclick=()=>{if($("btnAddSeg"))$("btnAddSeg").click();};
 /* 歌詞一括は撤去 */
 function clipColor(c){try{const L=c.data&&c.data.layers,a=(c.data&&c.data.active)||0;return (L&&L[a]&&L[a].fg)||(L&&L[0]&&L[0].fg)||"#888";}catch(e){return "#888";}}
@@ -2010,14 +2033,13 @@ function renderCards(){const box=$("cards");if(!box)return;box.innerHTML="";
     const bar=document.createElement("div");bar.className="bar";bar.style.background="var(--sub)";
     const num=document.createElement("div");num.className="cnum";num.textContent="LYRIC "+String(idx+1).padStart(2,"0");
     const nm=document.createElement("div");nm.className="cnm";nm.textContent=c.name||c.text;
-    const pat=document.createElement("div");pat.className="cpat";pat.textContent=c.pattern||"";
     const ops=document.createElement("div");ops.className="ops";
     const up=document.createElement("span");up.textContent="\u21bb";up.title="現在の見た目で上書き";
     up.onclick=e=>{e.stopPropagation();c.data=snapshot();c.text=cur().text.toUpperCase();c.pattern=patternCode(cur().seed);renderCards();note("素材を更新");};
     const del=document.createElement("span");del.textContent="\u2715";del.title="削除";
     del.onclick=e=>{e.stopPropagation();const rm=S.cards.splice(idx,1)[0];S.timeline=S.timeline.filter(it=>it.card!==rm);renderCards();renderTimeline();};
     ops.appendChild(up);ops.appendChild(del);
-    cell.appendChild(bar);cell.appendChild(num);cell.appendChild(nm);cell.appendChild(pat);cell.appendChild(ops);
+    cell.appendChild(bar);cell.appendChild(num);cell.appendChild(nm);cell.appendChild(ops);
     cell.title=(S.mode==="mv")?"タップで発火（今の時刻に配置）":"タップで編集に読込";
     cell.onclick=()=>{
       if(S.mode==="mv"){const it={card:c,start:+placeTime().toFixed(2)};S.timeline.push(it);
@@ -2034,10 +2056,19 @@ let tlSelItem=null;
 function placeTime(){return audioReady()?(audio.currentTime||0):Math.max(0,masterTime());}
 function tlDuration(){if(audioReady()&&audio.duration)return audio.duration;let m=0;S.timeline.forEach(it=>{if(it.start>m)m=it.start;});return m+4;}
 var tlPx=14,tlUserZoomed=false;
+var _seekHoldT=0;
+function playheadTime(){const D=tlDuration();let tt;
+  if(performance.now()-_seekHoldT<220)tt=(typeof freezeT==="number"?freezeT:0);
+  else if(audioReady()&&!audio.paused)tt=audio.currentTime||0;
+  else tt=S.lyric.on?Math.max(0,masterTime()):(typeof freezeT==="number"?freezeT:0);
+  if(D>0&&tt>D)tt=D;return tt;}
 function updatePlayhead(){const hd=$("tlhead");if(!hd)return;
-  const tt=audioReady()?(audio.currentTime||0):Math.max(0,masterTime());const x=tt*tlPx;hd.style.left=x+"px";
+  const D=tlDuration(),tt=playheadTime();
+  if(D>0&&tt>=D&&S.lyric.on){S.lyric.on=false;setPlayBtn(false);if(audioReady()){try{audio.pause();}catch(e){}}renderCards();}
+  const x=tt*tlPx;hd.style.left=x+"px";
   const wrap=$("tlwrap");
-  if(wrap&&((audioReady()&&!audio.paused)||S.playing)){const L=wrap.scrollLeft,R=L+wrap.clientWidth;
+  const moving=(audioReady()&&!audio.paused)||(!audioReady()&&S.lyric.on);
+  if(wrap&&moving){const L=wrap.scrollLeft,R=L+wrap.clientWidth;
     if(x<L+40||x>R-40)wrap.scrollLeft=Math.max(0,x-wrap.clientWidth*0.5);}}
 function buildRuler(D,W){const r=$("tlruler");if(!r)return;r.style.width=W+"px";r.innerHTML="";
   const raw=64/tlPx,steps=[1,2,5,10,15,20,30,60,120];let st=steps[steps.length-1];
@@ -2139,13 +2170,18 @@ function importTiming(){const txt=($("impText")?$("impText").value:"")||"";const
 $("btnImpApply").onclick=importTiming;
 $("btnImpClose").onclick=()=>{if($("impPanel"))$("impPanel").style.display="none";};
 (function(){const grip=$("tlgrip");if(!grip)return;let drag=false;
-  function seekAt(clientX){const tr=$("tltrack");if(!tr)return;const r=tr.getBoundingClientRect();
-    const D=tlDuration(),t=Math.max(0,Math.min(D,(clientX-r.left)/tlPx));
-    freezeT=t;t0=performance.now()-t*1000;
+  function seekToTime(t){const D=tlDuration();t=Math.max(0,Math.min(D,t||0));
+    freezeT=t;_seekHoldT=performance.now();t0=performance.now()-t*1000;
     if(audioReady())audio.currentTime=t;
     if($("tlhead"))$("tlhead").style.left=(t*tlPx)+"px";
     {const _w=$("tlwrap");if(_w){const _v=_w.clientWidth,_hx=t*tlPx;if(_hx<_w.scrollLeft+40||_hx>_w.scrollLeft+_v-40)_w.scrollLeft=Math.max(0,_hx-_v*0.5);}}
-    if($("mvTime")&&audioReady())$("mvTime").textContent=fmtClock(t)+" / "+fmtClock(audio.duration);}
+    const _dur=(audioReady()&&isFinite(audio.duration)&&audio.duration>0)?audio.duration:D;
+    const _v2=(D>0?(t/D)*1000:0)||0,_c=fmtClock(t)+" / "+fmtClock(_dur);
+    if($("mvScrub")&&document.activeElement!==$("mvScrub"))$("mvScrub").value=_v2;
+    if($("scrub")&&document.activeElement!==$("scrub"))$("scrub").value=_v2;
+    if($("mvTime"))$("mvTime").textContent=_c;if($("ttime"))$("ttime").textContent=_c;}
+function seekAt(clientX){const tr=$("tltrack");if(!tr)return;const r=tr.getBoundingClientRect();
+    seekToTime((clientX-r.left)/tlPx);}
   grip.addEventListener("pointerdown",e=>{drag=true;try{grip.setPointerCapture(e.pointerId);}catch(_){}
     e.preventDefault();e.stopPropagation();seekAt(e.clientX);});
   grip.addEventListener("pointermove",e=>{if(!drag)return;e.preventDefault();seekAt(e.clientX);});
@@ -2317,7 +2353,7 @@ function createMV(_silent){
   const _baseLayerN=S.layers.length;
   let _prevXL=false,_prevBig=false,_prevSmallSingle=false;const _tierByIdx=[];
   ANALYSIS.forEach((seg,_i)=>{
-    remixAll();
+    remixAll();S.scatter=null;
     if(seg.t<_SONG/2)S.layers.forEach(l=>l.speed*=1.12);
     S.layers.forEach(l=>l.text=seg.w);
     if(seg.g)S.layers.forEach(l=>makeIllegible(l,mulberry32((l.seed*13+99)>>>0),seg.g/100));
@@ -2411,7 +2447,7 @@ function createMV(_silent){
           _si.push({x:_x,y:_y,s:_pool[_pi++],r:(Math.random()-0.5)*0.10});}}
       /* 末尾の孤立1セット：右下(x≈4.4, 下寄り)。これが左へ抜け切ると同時に次クリップへ切替 */
       _si.push({x:4.40+(Math.random()-0.5)*0.05,y:0.90,s:_BASE*0.75,r:(Math.random()-0.5)*0.08});
-      S.scatter={bleed:true,items:_si,scroll:{start:seg.t,end:(ANALYSIS[_i+1]?ANALYSIS[_i+1].t:seg.t+3.6),x0:0.8,x1:-4.7}};
+      S.scatter={bleed:true,items:_si,scroll:{start:seg.t,end:(ANALYSIS[_i+1]?ANALYSIS[_i+1].t:seg.t+3.6),x0:0.8,x1:-4.7,steps:[{x:0.8,y:0,s:1,r:0},{x:-1.62,y:0,s:1,r:0,dur:1,ease:"out"},{x:-2.28,y:0,s:1,r:0,dur:1,ease:"linear"},{x:-9.72,y:0,s:1,r:0,dur:1,ease:"in"}]}};
     }
     if(seg.fx2==="pyr126"){  /* 126: GOOOOOOOOOON! をクリーンなセンター揃え三角ピラミッド(127の並べ方/タイル無し) */
       S.layers.forEach(l=>{l.margin=8;l.lscale=1;l.lx=0;l.ly=0;});      /* 1行を幅0.90W/高0.176Hで焼く */
@@ -2491,12 +2527,13 @@ $("scrub").oninput=()=>{if(audioReady())audio.currentTime=($("scrub").value/1000
 $("btnShareMv").onclick=()=>recordMV();
 $("btnPreviewMv").onclick=()=>previewSync();
 /* STOP は削除（PREVIEWの再生/停止トグルに統合） */
-$("mvScrub").oninput=()=>{if(audioReady())audio.currentTime=($("mvScrub").value/1000)*audio.duration;};
-function updateTransport(){if(!audio.src||!isFinite(audio.duration)||audio.duration<=0)return;
-  const v=(audio.currentTime/audio.duration)*1000||0, c=fmtClock(audio.currentTime)+" / "+fmtClock(audio.duration);
-  if(document.activeElement!==$("scrub"))$("scrub").value=v;
+$("mvScrub").oninput=()=>{seekToTime((+$("mvScrub").value/1000)*tlDuration());};
+function updateTransport(){const D=tlDuration(),tt=playheadTime();
+  const dur=(audioReady()&&isFinite(audio.duration)&&audio.duration>0)?audio.duration:D;
+  const v=(D>0?(tt/D)*1000:0)||0, c=fmtClock(tt)+" / "+fmtClock(dur);
+  if($("scrub")&&document.activeElement!==$("scrub"))$("scrub").value=v;
   if($("mvScrub")&&document.activeElement!==$("mvScrub"))$("mvScrub").value=v;
-  $("ttime").textContent=c; if($("mvTime"))$("mvTime").textContent=c;}
+  if($("ttime"))$("ttime").textContent=c; if($("mvTime"))$("mvTime").textContent=c;}
 function fmtClock(s){s=s||0;const m=Math.floor(s/60),sec=Math.floor(s%60);return m+":"+String(sec).padStart(2,"0");}
 
 /* ===== lyric sync ===== */
@@ -2527,14 +2564,14 @@ function lyricTick(){
     return;}
   if(idx>=0&&idx!==lyricActive){lyricActive=idx;frameSwitchColor();applySnapshot(S.cards[idx].data);
     renderLayerList();syncUI();renderCards();}}
-function setPlayBtn(on){const b=$("btnPreviewMv");if(b)b.textContent=on?"❚❚":"▶";}
+function setPlayBtn(on){const b=$("btnPreviewMv");if(b)b.textContent=on?"❚ ❚":"▶";}
 function previewSync(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   S.lyric.on=!S.lyric.on;setPlayBtn(S.lyric.on);
   if(S.lyric.on){lyricActive=-1;seqLast=(S.playing?(performance.now()-t0)/1000:freezeT);
     if(audioCtx)audioCtx.resume();
-      if(audio.duration&&(audio.ended||audio.currentTime>=audio.duration-0.05))audio.currentTime=0;
+      {var _D=tlDuration(),_ct=audioReady()?audio.currentTime:Math.max(0,masterTime());if((audio.duration&&(audio.ended||audio.currentTime>=audio.duration-0.05))||(_D>0&&_ct>=_D-0.05)){if(audioReady())audio.currentTime=0;freezeT=0;t0=performance.now();seqLast=0;lyricActive=-1;}}
       audio.muted=false;audio.volume=1;const _p=audio.play();if(_p&&_p.catch)_p.catch(err=>note("音声エラー: "+((err&&err.name)||err)));setTimeout(()=>{if(S.lyric.on&&(!isFinite(audio.duration)||audio.duration<=0||audio.currentTime<0.05))note("この表示では音が出ない場合があります。Safari/Chrome等のブラウザで開いてください");},1600);}
-  else{audio.pause();if(typeof mediaRec!=="undefined"&&mediaRec&&mediaRec.state==="recording")mediaRec.stop();}
+  else{freezeT=audioReady()?(audio.currentTime||0):Math.max(0,masterTime());audio.pause();if(typeof mediaRec!=="undefined"&&mediaRec&&mediaRec.state==="recording")mediaRec.stop();}
   renderCards();}
 function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
   if(mediaRec&&mediaRec.state==="recording"){rs.classList.add("on");
@@ -2543,7 +2580,7 @@ function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
 function recordMV(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   if(!audioReady()){note("楽曲を準備中です。少し待ってからお試しください");return;}
   ensureAudioGraph();audioCtx.resume();
-  const _q=($("mvQual")&&$("mvQual").dataset.val)||"normal";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};   /* 書き出し解像度 Normal=1280x720 / High=1920x1080 */
+  const _q=($("mvQual")&&$("mvQual").dataset.val)||"high";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};   /* 書き出し解像度 Normal=1280x720 / High=1920x1080 */
   const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");   /* 書き出し中はLYRICへ切替不可・減光 */
   S.lyric.on=true;lyricActive=-1;setPlayBtn(true);
   audio.currentTime=0;
@@ -2571,8 +2608,8 @@ function patternCode(n){n=(n>>>0);const s=String(n);
   if(s.length<=6)return s.padStart(4,'0');
   let c=n.toString(36).toUpperCase();if(/^[0-9]/.test(c))c='P'+c;return c;}
 function syncUI(){const l=cur();
-  $("patNum").innerHTML="PATTERN<b>"+patternCode(l.seed)+"</b>";
-  $("text").value=l.text;
+  var _pn=$("patNum");if(_pn)_pn.innerHTML="PATTERN<b>"+patternCode(l.seed)+"</b>";
+  $("text").value=l.text;reflectSegName();
   $("track").value=l.track;$("trackV").textContent=l.track;
   $("lead").value=l.lead;$("leadV").textContent=(+l.lead).toFixed(1);
   $("margin").value=o2u("margin",40-l.margin);$("marginV").textContent=o2u("margin",40-l.margin)|0;
@@ -2616,17 +2653,27 @@ function syncUI(){const l=cur();
 /* lyrics textarea 撤去 */
 
 /* ===== 共有リンク（URLにフォントを埋め込み再現） ===== */
+function _b64urlFromBytes(bytes){let bin="";const C=8192;for(let i=0;i<bytes.length;i+=C)bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+C));return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");}
+function _bytesFromB64url(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";const bin=atob(s),b=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)b[i]=bin.charCodeAt(i);return b;}
+async function deflateB64(str){const cs=new CompressionStream("deflate");const w=cs.writable.getWriter();w.write(new TextEncoder().encode(str));w.close();const buf=await new Response(cs.readable).arrayBuffer();return _b64urlFromBytes(new Uint8Array(buf));}
+async function inflateB64(b64){const ds=new DecompressionStream("deflate");const w=ds.writable.getWriter();w.write(_bytesFromB64url(b64));w.close();const buf=await new Response(ds.readable).arrayBuffer();return new TextDecoder().decode(buf);}
 function b64enc(s){return btoa(unescape(encodeURIComponent(s)));}
 function b64dec(b){return decodeURIComponent(escape(atob(b)));}
-function buildShareURL(){const data=snapshot();
-  return location.origin+location.pathname+"#f="+b64enc(JSON.stringify(data));}
-if($("btnShareLink"))$("btnShareLink").onclick=async()=>{const url=buildShareURL();
-  try{await navigator.clipboard.writeText(url);note("共有リンクをコピー");}
-  catch(e){history.replaceState(null,"","#f="+url.split("#f=")[1]);note("URLバーにリンクを反映");}
-  history.replaceState(null,"","#f="+url.split("#f=")[1]);};
-function loadFromHash(){const h=location.hash;if(!h||h.indexOf("#f=")!==0)return false;
-  try{const d=JSON.parse(b64dec(h.slice(3)));applySnapshot(d);note("共有リンクから読込");return true;}
-  catch(e){return false;}}
+async function buildShareURL(){const data=snapshot();const json=JSON.stringify(data);
+  if(window.CompressionStream){try{return location.origin+location.pathname+"#z="+(await deflateB64(json));}catch(e){}}
+  return location.origin+location.pathname+"#f="+b64enc(json);}
+function _shareToast(msg){var t=document.createElement("div");t.textContent=msg;t.style.cssText="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#191a1d;color:#fff;font:500 12px/1.45 -apple-system,sans-serif;padding:11px 16px;border-radius:7px;z-index:99999;max-width:88vw;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.32);word-break:break-all";document.body.appendChild(t);setTimeout(function(){t.style.transition="opacity .4s";t.style.opacity="0";setTimeout(function(){t.remove();},420);},1900);}
+function _shareCopy(url){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(function(){_shareToast("共有リンクをコピーしました");},function(){_shareToast("URLバーにリンクを反映しました");});}else{_shareToast("URLバーにリンクを反映しました");}}
+if($("btnShareLink"))$("btnShareLink").onclick=function(){
+  var url;try{url=location.origin+location.pathname+"#f="+b64enc(JSON.stringify(snapshot()));}catch(e){url=location.href;}
+  try{history.replaceState(null,"",url.slice(url.indexOf("#")));}catch(e){}
+  if(navigator.share){navigator.share({title:"HL — Headbanging Lyrics",text:"歌詞がヘッドバンギングするMVジェネレーター",url:url}).then(function(){},function(e){if(e&&e.name==="AbortError")return;_shareCopy(url);});return;}
+  _shareCopy(url);
+};
+function loadFromHash(){const h=location.hash;if(!h)return false;
+  if(h.indexOf("#z=")===0){inflateB64(h.slice(3)).then(function(json){try{applySnapshot(JSON.parse(json));note("共有リンクから読込");renderLayerList();renderCards();syncUI();setMode(S.mode);if(S.mode==="mv")createMV(true);}catch(e){}});return false;}
+  if(h.indexOf("#f=")===0){try{applySnapshot(JSON.parse(b64dec(h.slice(3))));note("共有リンクから読込");return true;}catch(e){return false;}}
+  return false;}
 
 /* ===== 曲の自動読込（?song=URL もしくは同梱 song.mp3） ===== */
 function loadSongURL(url){url=safeSongURL(url);if(!url)return;
