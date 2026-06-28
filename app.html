@@ -206,7 +206,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #btnShareMv{background:transparent;color:#fff;border-color:var(--accent);display:flex;align-items:center;justify-content:center}
   #btnPreviewMv{display:flex;align-items:center;justify-content:center}
   #btnShareMv:hover{background:var(--accent);color:#fff}
-  #recStatus{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:none;
     align-items:center;background:#0d0d10;border:1px solid var(--accent);color:#fff;
     font:600 12px/1 var(--mono);letter-spacing:-.01em;padding:9px 16px;border-radius:22px;
     box-shadow:0 6px 22px rgba(0,0,0,.45)}
@@ -1069,7 +1069,6 @@ function pathPts(c,pts,r){
     c.quadraticCurveTo(B[0],B[1],B[0]+v2x/l2*rr,B[1]+v2y/l2*rr);}
   c.lineTo(pts[pts.length-1][0],pts[pts.length-1][1]);}
 
-const _shapeCache=new Map();
 function toCanvas(stroke,ox,baseY,ch,flare,slantK,rng,rough,wscale){
   const ws=wscale||1;
   const out=[];for(const p of stroke){let gx=p[0],gy=p[1];
@@ -1282,16 +1281,10 @@ function renderLayer(lay,time,W,H,skeleton,dst){
         arcDy=-arc*(half*0.8)*(1-nx*nx);arcRot=Math.atan(arc*1.6*nx);}
       const byc=baseY+arcDy,cyc=byc-chSc*.5;
       const gk=lay.glyph||"base";
-      const paths=[];if(!lay.face){
-        const _ck=drawChar+"|"+gk+"|"+(lay.formKind||"");
-        let _shaped=_shapeCache.get(_ck);
-        if(!_shaped){_shaped=[];for(let stroke of gDraw.s){if(!stroke.length)continue;
-          if(gk!=="base")stroke=deformStroke(stroke,gk);
-          if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
-          _shaped.push(stroke);}
-          _shapeCache.set(_ck,_shaped);}
-        for(const stroke of _shaped)
-          paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
+      const paths=[];if(!lay.face)for(let stroke of gDraw.s){if(!stroke.length)continue;
+        if(gk!=="base")stroke=deformStroke(stroke,gk);
+        if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
+        paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
       if(!lay.face&&lay.shatter){const tt=(time||0)*(lay.speed||1);
         paths.forEach((P,si)=>{const rr=mulberry32((lay.seed*131+gIndex*977+si*61)>>>0);
           const a=rr()*6.283,d=chS*0.18*(lay.amp||1)*(0.35+0.65*Math.abs(Math.sin(tt*2+si+rr()*6)));
@@ -2408,13 +2401,13 @@ function createMV(_silent){
         _si.push({x:_x,y:_y,s:_cs,r:_rot});}
       S.scatter={bleed:true,items:_si};
     }
-    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=20行ウォール / 50%=5レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
+    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=30行ウォール / 50%=7レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
       S.scatter=null;const _wm=()=>-(5+Math.random()*35);
-      if(Math.random()<0.5){const _w30=Array(20).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
+      if(Math.random()<0.5){const _w30=Array(30).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
         S.layers.forEach(l=>{l.text=_w30;l.margin=_m;l.lscale=1;l.lx=0;l.ly=0;});}
       else{const _w5=Array(5).fill(seg.w).join("\n");                                       /* B: 7レイヤー×各5行に分割（位置をずらして奥行き） */
-        while(S.layers.length<5)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
-        S.layers.length=5;
+        while(S.layers.length<7)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
+        S.layers.length=7;
         S.layers.forEach(l=>{l.text=_w5;l.margin=_wm();l.lscale=1;l.lx=(Math.random()*2-1)*48;l.ly=(Math.random()*2-1)*70;});}
     }
     _prevBig=_big;_prevXL=_xl;
