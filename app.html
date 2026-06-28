@@ -206,7 +206,8 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   #btnShareMv{background:transparent;color:#fff;border-color:var(--accent);display:flex;align-items:center;justify-content:center}
   #btnPreviewMv{display:flex;align-items:center;justify-content:center}
   #btnShareMv:hover{background:var(--accent);color:#fff}
-  #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:60;display:none;
+  #exportLock{position:fixed;inset:0;z-index:9990;display:none;cursor:not-allowed;-webkit-tap-highlight-color:transparent}#exportLock.on{display:block}
+  #recStatus{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:none;
     align-items:center;background:#0d0d10;border:1px solid var(--accent);color:#fff;
     font:600 12px/1 var(--mono);letter-spacing:-.01em;padding:9px 16px;border-radius:22px;
     box-shadow:0 6px 22px rgba(0,0,0,.45)}
@@ -683,7 +684,7 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
     <div class="specmeta">
       <span class="tag" id="mSeg"></span>
     </div>
-    <div class="canvaswrap"><canvas id="view" width="1280" height="720"></canvas><div id="recStatus"></div></div>
+    <div class="canvaswrap"><canvas id="view" width="1280" height="720"></canvas><div id="recStatus"></div><div id="exportLock"></div></div>
   </section>
   <div class="tlbar m-only" id="tlbar">
     <div class="tlbar-head">
@@ -1069,6 +1070,7 @@ function pathPts(c,pts,r){
     c.quadraticCurveTo(B[0],B[1],B[0]+v2x/l2*rr,B[1]+v2y/l2*rr);}
   c.lineTo(pts[pts.length-1][0],pts[pts.length-1][1]);}
 
+const _shapeCache=new Map();
 function toCanvas(stroke,ox,baseY,ch,flare,slantK,rng,rough,wscale){
   const ws=wscale||1;
   const out=[];for(const p of stroke){let gx=p[0],gy=p[1];
@@ -1281,10 +1283,16 @@ function renderLayer(lay,time,W,H,skeleton,dst){
         arcDy=-arc*(half*0.8)*(1-nx*nx);arcRot=Math.atan(arc*1.6*nx);}
       const byc=baseY+arcDy,cyc=byc-chSc*.5;
       const gk=lay.glyph||"base";
-      const paths=[];if(!lay.face)for(let stroke of gDraw.s){if(!stroke.length)continue;
-        if(gk!=="base")stroke=deformStroke(stroke,gk);
-        if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
-        paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
+      const paths=[];if(!lay.face){
+        const _ck=drawChar+"|"+gk+"|"+(lay.formKind||"");
+        let _shaped=_shapeCache.get(_ck);
+        if(!_shaped){_shaped=[];for(let stroke of gDraw.s){if(!stroke.length)continue;
+          if(gk!=="base")stroke=deformStroke(stroke,gk);
+          if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
+          _shaped.push(stroke);}
+          _shapeCache.set(_ck,_shaped);}
+        for(const stroke of _shaped)
+          paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
       if(!lay.face&&lay.shatter){const tt=(time||0)*(lay.speed||1);
         paths.forEach((P,si)=>{const rr=mulberry32((lay.seed*131+gIndex*977+si*61)>>>0);
           const a=rr()*6.283,d=chS*0.18*(lay.amp||1)*(0.35+0.65*Math.abs(Math.sin(tt*2+si+rr()*6)));
@@ -1571,7 +1579,7 @@ function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
 function frameSwitchColor(){if(S.frame)S.frame.colIdx++;}
 const _isTouch=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||("ontouchstart" in window);let _lastFrame=0;
 function _lofiActiveNow(){return !!(S.lofi&&S.lofi.on&&(_sectFX()||(S.lofi.all&&S.mode==="mv")));}
-function loop(now){const cap=(_isTouch&&_lofiActiveNow())?33.34:0;if(cap&&now-_lastFrame<cap){requestAnimationFrame(loop);return;}_lastFrame=now;render(now);requestAnimationFrame(loop);}requestAnimationFrame(loop);
+function loop(now){const cap=(_isTouch&&_lofiActiveNow())?33.34:0;if(cap&&now-_lastFrame<cap){requestAnimationFrame(loop);return;}_lastFrame=now;render(now);if(_recVTrack&&mediaRec&&mediaRec.state==="recording"&&now-_lastReqT>=33.2){try{_recVTrack.requestFrame();}catch(e){}_lastReqT=now;}requestAnimationFrame(loop);}requestAnimationFrame(loop);
 
 /* =========================================================================
    UI
@@ -1747,7 +1755,7 @@ if($("btnRec"))$("btnRec").onclick=()=>startRec(false);
 function startRec(withAudio){
   if(mediaRec&&mediaRec.state==="recording"){mediaRec.stop();return;}
   try{
-    const vStream=cv.captureStream(30);let tracks=[...vStream.getVideoTracks()];
+    let vStream;_recVTrack=null;try{vStream=cv.captureStream(0);_recVTrack=vStream.getVideoTracks()[0];if(!_recVTrack||typeof _recVTrack.requestFrame!=="function"){_recVTrack=null;vStream=cv.captureStream(30);}}catch(e){_recVTrack=null;vStream=cv.captureStream(30);}_lastReqT=0;let tracks=[...vStream.getVideoTracks()];
     if(withAudio&&audioReady()){ensureAudioGraph();tracks=tracks.concat(audioDest.stream.getAudioTracks());}
     const mixed=new MediaStream(tracks);
     /* 保存しやすい MP4(H.264/AAC) を優先。対応しない環境のみ WebM にフォールバック */
@@ -1756,12 +1764,12 @@ function startRec(withAudio){
     const ext=mime.indexOf("mp4")>=0?"mp4":"webm";
     mediaRec=new MediaRecorder(mixed,{mimeType:mime,videoBitsPerSecond:8_000_000,audioBitsPerSecond:192000});
     recChunks=[];mediaRec.ondataavailable=e=>{if(e.data.size)recChunks.push(e.data);};
-    mediaRec.onstop=()=>{const blob=new Blob(recChunks,{type:mime.split(";")[0]});
+    mediaRec.onstop=()=>{_exportLock(false);_recVTrack=null;const blob=new Blob(recChunks,{type:mime.split(";")[0]});
       const a=document.createElement("a");a.download=(withAudio?"hmo-mv":"hmo-clip")+"."+ext;
       a.href=URL.createObjectURL(blob);a.click();
       {const _rp=$("recPill");if(_rp)_rp.classList.remove("on");}const _rs=$("recStatus");if(_rs)_rs.classList.remove("on");note(ext.toUpperCase()+" 書き出し（保存）");};
     mediaRec.start();{const _rp=$("recPill");if(_rp)_rp.classList.add("on");}note(withAudio?"MV録画開始":"録画開始");
-  }catch(err){note("録画に未対応の環境です");}
+  }catch(err){_exportLock(false);note("録画に未対応の環境です");}
 }
 
 /* random / seed */
@@ -2401,13 +2409,13 @@ function createMV(_silent){
         _si.push({x:_x,y:_y,s:_cs,r:_rot});}
       S.scatter={bleed:true,items:_si};
     }
-    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=30行ウォール / 50%=7レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
+    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=20行ウォール / 50%=5レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
       S.scatter=null;const _wm=()=>-(5+Math.random()*35);
-      if(Math.random()<0.5){const _w30=Array(30).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
+      if(Math.random()<0.5){const _w30=Array(20).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
         S.layers.forEach(l=>{l.text=_w30;l.margin=_m;l.lscale=1;l.lx=0;l.ly=0;});}
       else{const _w5=Array(5).fill(seg.w).join("\n");                                       /* B: 7レイヤー×各5行に分割（位置をずらして奥行き） */
-        while(S.layers.length<7)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
-        S.layers.length=7;
+        while(S.layers.length<5)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
+        S.layers.length=5;
         S.layers.forEach(l=>{l.text=_w5;l.margin=_wm();l.lscale=1;l.lx=(Math.random()*2-1)*48;l.ly=(Math.random()*2-1)*70;});}
     }
     _prevBig=_big;_prevXL=_xl;
@@ -2511,7 +2519,7 @@ window.addEventListener("keydown",e=>{if(e.code==="Space"&&document.activeElemen
   &&document.activeElement.tagName!=="INPUT"){e.preventDefault();if(retime.on)tapHit();else tap();}});
 
 /* ===== audio ===== */
-const audio=$("audio");let audioCtx=null,mediaSrc=null,audioDest=null,audioGraphReady=false;
+const audio=$("audio");let audioCtx=null,mediaSrc=null,audioDest=null,audioGraphReady=false,_recVTrack=null,_lastReqT=0;
 function audioReady(){return !!(audio.src&&audio.duration);}
 function ensureAudioGraph(){if(audioGraphReady)return;
   audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -2577,14 +2585,15 @@ function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
   if(mediaRec&&mediaRec.state==="recording"){rs.classList.add("on");
     rs.textContent="書き出し中  "+fmtClock(audio.currentTime||0)+" / "+fmtClock(isFinite(audio.duration)?audio.duration:0);}
   else rs.classList.remove("on");}
+function _exportLock(on){const el=$("exportLock");if(el)el.classList.toggle("on",!!on);try{document.body.style.touchAction=on?"none":"";}catch(e){}}
 function recordMV(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   if(!audioReady()){note("楽曲を準備中です。少し待ってからお試しください");return;}
   ensureAudioGraph();audioCtx.resume();
   const _q=($("mvQual")&&$("mvQual").dataset.val)||"high";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};   /* 書き出し解像度 Normal=1280x720 / High=1920x1080 */
-  const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");   /* 書き出し中はLYRICへ切替不可・減光 */
+  const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");_exportLock(true);   /* 書き出し中はLYRICへ切替不可・減光 */
   S.lyric.on=true;lyricActive=-1;setPlayBtn(true);
   audio.currentTime=0;
-  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");_restoreRes();note("この環境では書き出せません。PCのChrome等で開いてください");});
+  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");_restoreRes();_exportLock(false);note("この環境では書き出せません。PCのChrome等で開いてください");});
   startRec(true);
   audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");_restoreRes();};
   setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}if(_ms)_ms.classList.remove("exporting");_restoreRes();note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
