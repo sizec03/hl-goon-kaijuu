@@ -77,9 +77,9 @@ HL(Headbanging Lyrics)_Lyric Video Generator">
   .brand{grid-column:1;grid-row:1;position:sticky;top:0;z-index:12;background:var(--sheet);
     padding:20px 22px 18px;border-right:1px solid var(--hair);border-bottom:1px solid var(--ink)}
   .brand .mk{display:flex;align-items:center;gap:6px;font:700 26px/1 var(--sans);letter-spacing:-.01em}
-  .brand .mk .mkhl{height:0.72em;width:auto;display:block}
+  .brand .mk .mkhl{height:1.008em;width:auto;display:block}
   body.mode-mv .mkhl{filter:invert(1)}
-  .brand .mk .mksub{font:400 10px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub)}
+  .brand .mk .mksub{margin-left:4px;font:400 12px/1.2 var(--mono);letter-spacing:-.01em;color:var(--sub)}
   .brand .mk em{font-style:normal;color:var(--accent)}
   .brand .meta{font:400 9.5px/1.4 var(--mono);letter-spacing:-.01em;color:var(--sub);
     margin-top:7px;text-transform:uppercase}
@@ -1069,6 +1069,7 @@ function pathPts(c,pts,r){
     c.quadraticCurveTo(B[0],B[1],B[0]+v2x/l2*rr,B[1]+v2y/l2*rr);}
   c.lineTo(pts[pts.length-1][0],pts[pts.length-1][1]);}
 
+const _shapeCache=new Map();
 function toCanvas(stroke,ox,baseY,ch,flare,slantK,rng,rough,wscale){
   const ws=wscale||1;
   const out=[];for(const p of stroke){let gx=p[0],gy=p[1];
@@ -1281,10 +1282,16 @@ function renderLayer(lay,time,W,H,skeleton,dst){
         arcDy=-arc*(half*0.8)*(1-nx*nx);arcRot=Math.atan(arc*1.6*nx);}
       const byc=baseY+arcDy,cyc=byc-chSc*.5;
       const gk=lay.glyph||"base";
-      const paths=[];if(!lay.face)for(let stroke of gDraw.s){if(!stroke.length)continue;
-        if(gk!=="base")stroke=deformStroke(stroke,gk);
-        if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
-        paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
+      const paths=[];if(!lay.face){
+        const _ck=drawChar+"|"+gk+"|"+(lay.formKind||"");
+        let _shaped=_shapeCache.get(_ck);
+        if(!_shaped){_shaped=[];for(let stroke of gDraw.s){if(!stroke.length)continue;
+          if(gk!=="base")stroke=deformStroke(stroke,gk);
+          if(lay.formKind&&lay.formKind!=="normal")stroke=formWarp(stroke,lay.formKind,gDraw.w);
+          _shaped.push(stroke);}
+          _shapeCache.set(_ck,_shaped);}
+        for(const stroke of _shaped)
+          paths.push(toCanvas(stroke,cursor,byc,chSc,lay.flare,slantTotal,rng,lay.rough,ws));}
       if(!lay.face&&lay.shatter){const tt=(time||0)*(lay.speed||1);
         paths.forEach((P,si)=>{const rr=mulberry32((lay.seed*131+gIndex*977+si*61)>>>0);
           const a=rr()*6.283,d=chS*0.18*(lay.amp||1)*(0.35+0.65*Math.abs(Math.sin(tt*2+si+rr()*6)));
@@ -2401,13 +2408,13 @@ function createMV(_silent){
         _si.push({x:_x,y:_y,s:_cs,r:_rot});}
       S.scatter={bleed:true,items:_si};
     }
-    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=30行ウォール / 50%=7レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
+    if(((seg.w==="GOON!"||seg.w==="KAIJUU")&&seg.t>=_SONG/2)||seg.w==="KYUKYU"||seg.w==="KYUUUUUUUUN"){  /* GOON!/KAIJUU(後半)・KYUKYU/KYUUUUUUUUN(全体)：50%=20行ウォール / 50%=5レイヤー(各5行)分割。INSET(margin)=-40〜-5 */
       S.scatter=null;const _wm=()=>-(5+Math.random()*35);
-      if(Math.random()<0.5){const _w30=Array(30).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
+      if(Math.random()<0.5){const _w30=Array(20).fill(seg.w).join("\n"),_m=_wm();          /* A: 30行GOON!ウォール（全レイヤー共通サイズ） */
         S.layers.forEach(l=>{l.text=_w30;l.margin=_m;l.lscale=1;l.lx=0;l.ly=0;});}
       else{const _w5=Array(5).fill(seg.w).join("\n");                                       /* B: 7レイヤー×各5行に分割（位置をずらして奥行き） */
-        while(S.layers.length<7)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
-        S.layers.length=7;
+        while(S.layers.length<5)S.layers.push(cloneLayer(S.layers[S.layers.length-1]));
+        S.layers.length=5;
         S.layers.forEach(l=>{l.text=_w5;l.margin=_wm();l.lscale=1;l.lx=(Math.random()*2-1)*48;l.ly=(Math.random()*2-1)*70;});}
     }
     _prevBig=_big;_prevXL=_xl;
