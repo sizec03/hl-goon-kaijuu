@@ -1178,7 +1178,7 @@ function rollChar(ch,shift){if(!shift)return ch;
   return ch;}
 
 function applyMotion(lay,i,time,totalChars){
-  const m=lay.motions,sp=lay.speed,amp=lay.amp,e=lay.easing;
+  const m=lay.motions,sp=(lay.speed||0)*1.2,amp=(lay.amp||0)*1.2,e=lay.easing;   /* MOTION STYLEのSPEED/AMOUNTを全体120% */
   const ph=time*sp*2.2 - i*lay.phase*2.0;   /* バラバラ(位相ずれ) */
   const phS=time*sp*2.2;                      /* 全て同時 */
   const T={dx:0,dy:0,rot:0,sx:1,sy:1,slant:0,hue:0,alpha:1,weight:1,syBottom:1,headSwing:0,headOn:false};
@@ -2549,32 +2549,13 @@ let lyricActive=-1,seqClock=0,seqLast=0; let _clipActiveMT=0;
 function activeCardIndex(t){let best=-1,bs=-1;
   S.cards.forEach((c,i)=>{if(c.start!=null&&c.start<=t&&c.start>=bs){bs=c.start;best=i;}});return best;}
 function masterTime(){return (audioReady()&&!audio.paused)?audio.currentTime:(S.playing?(performance.now()-t0)/1000:freezeT);}
-function _genFix(idx){
-  /* ① LYRIC58-67(idx57-66)かつ63-64(idx62-63)以外: FORM/LINE/MOTION STYLEをクリップ毎に多様化(バラバラ) */
-  if(idx>=57&&idx<=66&&!(idx>=62&&idx<=63)){
-    let s=((idx*2654435761)+11)>>>0;const rng=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
-    const GL=["base","bolt","fracture","shard","base","bolt"];
-    const FM=["normal","din","geo","gotham","serif","stencil"];
-    const MO=["bangA","bangB","bangC","bangD","swayx","sphere","wave","ripple","pulse","jitter","spin","glitch"];
-    for(const L of S.layers){ if(!L)continue;
-      if(!L.face){ L.glyph=GL[Math.floor(rng()*GL.length)]; L.formKind=FM[Math.floor(rng()*FM.length)]; }
-      L.lineArc=rng()>.45?Math.round((rng()-.5)*70):0;
-      L.lineAngle=rng()>.55?Math.round((rng()-.5)*26):0;
-      const set=new Set();const n=1+Math.floor(rng()*2);
-      for(let k=0;k<n;k++)set.add(MO[Math.floor(rng()*MO.length)]);
-      L.motions=set;
-    }
-  }
-  /* ② 既存フォント(face)使用層: MOTION STYLEの SPEED>=5 / AMOUNT(amp)>=4 */
-  for(const L of S.layers){ if(L&&L.face){ L.speed=Math.max(+L.speed||0,5); L.amp=Math.max(+L.amp||0,4); } }
-}
 function lyricTick(){
   if(!S.lyric.on)return;
   if(S.mode==="mv"&&S.timeline.length){
     const t=masterTime();let slot=0;
     for(let i=0;i<S.timeline.length;i++){if(S.timeline[i].start<=t)slot=i;else break;}
     if(slot!==lyricActive){lyricActive=slot;frameSwitchColor();startTransition();
-      applySnapshot(S.timeline[slot].card.data);_genFix(slot);renderLayerList();syncUI();highlightActiveClip(S.timeline[slot].card);}
+      applySnapshot(S.timeline[slot].card.data);renderLayerList();syncUI();highlightActiveClip(S.timeline[slot].card);}
     return;}
   if(!S.cards.length)return;
   if(S.beatSnap&&S.bpm>0){
