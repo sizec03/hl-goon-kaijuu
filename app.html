@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=UnifrakturCook:wght@700&family=Pirata+One&family=Rubik+Glitch&family=Boldonse&family=New+Rocker&family=Megrim&display=swap" rel="stylesheet">
-<title>H L — Headbanging Lyrics by HEAVY METAL OCEANS</title>
+<title>Headbanging Lyrics</title>
 <meta name="description" content="ヘドバンする歌詞で、MVをつくる。
 HL(Headbanging Lyrics)_Lyric Video Generator">
 <meta property="og:type" content="website">
@@ -1016,7 +1016,7 @@ function frameLayer(o){return Object.assign(defaultLayer(),{
 },o,{motions:new Set(o.motions||[])});}
 function buildFrameLayers(){return[
   frameLayer({text:"GOON! KAIJUU",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"left",lx:-4,swayAmp:0,ly:-314,lscale:.017,track:1,seed:7001}),
-  frameLayer({text:"HL_Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:2,ly:296,lscale:.017,track:1,seed:7003})
+  frameLayer({text:"Headbanging Lyrics",face:"Boldonse",hl:"",fg:"#e9e9e6",align:"right",lx:2,ly:296,lscale:.017,track:1,seed:7003})
 ];}
 const FRAME_LAYERS=buildFrameLayers();
 
@@ -1539,13 +1539,13 @@ function drawBandText(W,H,t,F,time,txCol){
   ctx.restore();
 }
 let _credPrevIdx=null,_credAnim=null;
-function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
+function drawFrame(time,_opp){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
   const W=cv.width,H=cv.height,t=F.thick*(H/720),col=FRAME_COLORS[((F.colIdx%FRAME_COLORS.length)+FRAME_COLORS.length)%FRAME_COLORS.length];
-  const _band=cvActive()?"#000000":col;
+  const _fc=_opp?complementaryText(col):col;const _band=cvActive()?"#000000":_fc;
   ctx.save();
   ctx.fillStyle=_band;ctx.beginPath();ctx.rect(0,0,W,H);ctx.rect(t,t,W-2*t,H-2*t);ctx.fill("evenodd");
   ctx.restore();
-  drawBandText(W,H,t,F,time,complementaryText(_band));
+  drawBandText(W,H,t,F,time,_opp?col:complementaryText(_band));
   /* FRAME内クレジット：外径からの距離を X（横＝marginの余白）に合わせ、上端/下端を外径から D に固定 */
   {const D=(6/100)*Math.min(W,H);
    FRAME_LAYERS[0].ly=D+(FRAME_LAYERS[0]._h||8)/2-H/2;    /* 右上 */
@@ -1579,7 +1579,7 @@ function drawFrame(time){const F=S.frame;if(!F||!F.on||F.thick<=0)return;
 function frameSwitchColor(){if(S.frame)S.frame.colIdx++;}
 const _isTouch=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||("ontouchstart" in window);let _lastFrame=0;
 function _lofiActiveNow(){return !!(S.lofi&&S.lofi.on&&(_sectFX()||(S.lofi.all&&S.mode==="mv")));}
-function loop(now){const cap=(_isTouch&&_lofiActiveNow())?33.34:0;if(cap&&now-_lastFrame<cap){requestAnimationFrame(loop);return;}_lastFrame=now;render(now);if(_recVTrack&&mediaRec&&mediaRec.state==="recording"&&now-_lastReqT>=33.2){try{_recVTrack.requestFrame();}catch(e){}_lastReqT=now;}requestAnimationFrame(loop);}requestAnimationFrame(loop);
+function loop(now){const cap=(_isTouch&&_lofiActiveNow())?33.34:0;if(cap&&now-_lastFrame<cap){requestAnimationFrame(loop);return;}_lastFrame=now;if(_exPhase==="intro"||_exPhase==="outro"){drawExFrame(now);}else{render(now);}if(_recVTrack&&mediaRec&&mediaRec.state==="recording"&&now-_lastReqT>=33.2){try{_recVTrack.requestFrame();}catch(e){}_lastReqT=now;}requestAnimationFrame(loop);}requestAnimationFrame(loop);
 
 /* =========================================================================
    UI
@@ -2519,7 +2519,7 @@ window.addEventListener("keydown",e=>{if(e.code==="Space"&&document.activeElemen
   &&document.activeElement.tagName!=="INPUT"){e.preventDefault();if(retime.on)tapHit();else tap();}});
 
 /* ===== audio ===== */
-const audio=$("audio");let audioCtx=null,mediaSrc=null,audioDest=null,audioGraphReady=false,_recVTrack=null,_lastReqT=0;
+const audio=$("audio");let audioCtx=null,mediaSrc=null,audioDest=null,audioGraphReady=false,_recVTrack=null,_lastReqT=0,_exPhase=null,_exPhaseT0=0,_exColBase=0,_exSaveColIdx=0,_exSaveFrameOn=true;
 function audioReady(){return !!(audio.src&&audio.duration);}
 function ensureAudioGraph(){if(audioGraphReady)return;
   audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -2549,13 +2549,32 @@ let lyricActive=-1,seqClock=0,seqLast=0; let _clipActiveMT=0;
 function activeCardIndex(t){let best=-1,bs=-1;
   S.cards.forEach((c,i)=>{if(c.start!=null&&c.start<=t&&c.start>=bs){bs=c.start;best=i;}});return best;}
 function masterTime(){return (audioReady()&&!audio.paused)?audio.currentTime:(S.playing?(performance.now()-t0)/1000:freezeT);}
+function _genFix(idx){
+  /* ① LYRIC58-67(idx57-66)かつ63-64(idx62-63)以外: FORM/LINE/MOTION STYLEをクリップ毎に多様化(バラバラ) */
+  if(idx>=57&&idx<=66&&!(idx>=62&&idx<=63)){
+    let s=((idx*2654435761)+11)>>>0;const rng=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};
+    const GL=["base","bolt","fracture","shard","base","bolt"];
+    const FM=["normal","din","geo","gotham","serif","stencil"];
+    const MO=["bangA","bangB","bangC","bangD","swayx","sphere","wave","ripple","pulse","jitter","spin","glitch"];
+    for(const L of S.layers){ if(!L)continue;
+      if(!L.face){ L.glyph=GL[Math.floor(rng()*GL.length)]; L.formKind=FM[Math.floor(rng()*FM.length)]; }
+      L.lineArc=rng()>.45?Math.round((rng()-.5)*70):0;
+      L.lineAngle=rng()>.55?Math.round((rng()-.5)*26):0;
+      const set=new Set();const n=1+Math.floor(rng()*2);
+      for(let k=0;k<n;k++)set.add(MO[Math.floor(rng()*MO.length)]);
+      L.motions=set;
+    }
+  }
+  /* ② 既存フォント(face)使用層: MOTION STYLEの SPEED>=5 / AMOUNT(amp)>=4 */
+  for(const L of S.layers){ if(L&&L.face){ L.speed=Math.max(+L.speed||0,5); L.amp=Math.max(+L.amp||0,4); } }
+}
 function lyricTick(){
   if(!S.lyric.on)return;
   if(S.mode==="mv"&&S.timeline.length){
     const t=masterTime();let slot=0;
     for(let i=0;i<S.timeline.length;i++){if(S.timeline[i].start<=t)slot=i;else break;}
     if(slot!==lyricActive){lyricActive=slot;frameSwitchColor();startTransition();
-      applySnapshot(S.timeline[slot].card.data);renderLayerList();syncUI();highlightActiveClip(S.timeline[slot].card);}
+      applySnapshot(S.timeline[slot].card.data);_genFix(slot);renderLayerList();syncUI();highlightActiveClip(S.timeline[slot].card);}
     return;}
   if(!S.cards.length)return;
   if(S.beatSnap&&S.bpm>0){
@@ -2586,18 +2605,38 @@ function updateRecStatus(){const rs=$("recStatus");if(!rs)return;
     rs.textContent="書き出し中  "+fmtClock(audio.currentTime||0)+" / "+fmtClock(isFinite(audio.duration)?audio.duration:0);}
   else rs.classList.remove("on");}
 function _exportLock(on){const el=$("exportLock");if(el)el.classList.toggle("on",!!on);try{document.body.style.touchAction=on?"none":"";}catch(e){}}
+/* ===== MOVIE 前後の無音イントロ/アウトロ演出（本編の音・LYRIC同期は不変） ===== */
+const EX_DUR=2000,EX_BLINKS=6;
+const EX_OPP=[false,true,true,true,true,false];   /* 6回の色替えのうち true=opposite配色(補色反転)。4回opposite */
+function drawExFrame(now){
+  const W=cv.width,H=cv.height,t=now-_exPhaseT0,out=(_exPhase==="outro");
+  ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
+  ctx.fillStyle="#000";ctx.fillRect(0,0,W,H);
+  const BLACK=150;                                 /* 冒頭/末尾は真っ黒（フェードではなくカット＝FRAME色は透過させない） */
+  if(!out&&t<BLACK)return;                          /* イントロ最初は真っ黒 */
+  if(out&&t>EX_DUR-BLACK)return;                    /* アウトロ最後は真っ黒 */
+  const bStart=BLACK+120,bSpan=1200,per=bSpan/EX_BLINKS,cStart=bStart+bSpan;
+  let step;if(t<bStart)step=0;else if(t<cStart)step=Math.min(EX_BLINKS,1+Math.floor((t-bStart)/per));else step=EX_BLINKS;
+  S.frame.colIdx=_exColBase+step;                 /* FRAMEの色を6回進める→クレジットがスライドイン＋点滅 */
+  const _opp=(step>=1&&step<=EX_BLINKS)?EX_OPP[step-1]:false;
+  ctx.globalAlpha=1;                              /* FRAMEは常に不透明（透過しない） */
+  drawFrame(now/1000,_opp);                       /* アプリ本来のFRAME。4回はopposite配色 */
+  ctx.globalAlpha=1;
+}
 function recordMV(){if(S.mode==="mv"){if(!S.timeline.length){note("タイムラインが空です");return;}}else if(!S.cards.length){note("素材がありません");return;}
   if(!audioReady()){note("楽曲を準備中です。少し待ってからお試しください");return;}
   ensureAudioGraph();audioCtx.resume();
-  const _q=($("mvQual")&&$("mvQual").dataset.val)||"high";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};   /* 書き出し解像度 Normal=1280x720 / High=1920x1080 */
-  const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");_exportLock(true);   /* 書き出し中はLYRICへ切替不可・減光 */
+  const _q=($("mvQual")&&$("mvQual").dataset.val)||"high";const _ew=_q==="high"?1920:_q==="small"?854:1280,_eh=_q==="high"?1080:_q==="small"?480:720;const _sw=cv.width,_sh=cv.height;cv.width=_ew;cv.height=_eh;const _restoreRes=()=>{cv.width=_sw;cv.height=_sh;};
+  const _ms=$("modeSwitch");if(_ms)_ms.classList.add("exporting");_exportLock(true);
   S.lyric.on=true;lyricActive=-1;setPlayBtn(true);
-  audio.currentTime=0;
-  const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(_ms)_ms.classList.remove("exporting");_restoreRes();_exportLock(false);note("この環境では書き出せません。PCのChrome等で開いてください");});
+  const _cleanup=()=>{_exPhase=null;audio.onended=null;S.frame.colIdx=_exSaveColIdx;S.frame.on=_exSaveFrameOn;_credAnim=null;S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");_restoreRes();_exportLock(false);};
+  _exSaveColIdx=S.frame.colIdx;_exColBase=S.frame.colIdx;_exSaveFrameOn=S.frame.on;S.frame.on=true;_credPrevIdx=S.frame.colIdx;_credAnim=null;
   startRec(true);
-  audio.onended=()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();S.lyric.on=false;setPlayBtn(false);if(_ms)_ms.classList.remove("exporting");_restoreRes();};
-  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}if(_ms)_ms.classList.remove("exporting");_restoreRes();note("再生できず書き出し中止。PCのブラウザで開いてください");}},2200);
-  note("SHARE：MV書き出し開始（約2:47・曲の終わりで自動保存）");}
+  _exPhase="intro";_exPhaseT0=performance.now();drawExFrame(_exPhaseT0);
+  setTimeout(()=>{if(!(mediaRec&&mediaRec.state==="recording"))return;_exPhase="song";S.frame.colIdx=_exSaveColIdx;_credPrevIdx=_exSaveColIdx;_credAnim=null;audio.currentTime=0;const _p=audio.play();if(_p&&_p.catch)_p.catch(()=>{if(mediaRec&&mediaRec.state==="recording"){try{mediaRec.stop();}catch(e){}}_cleanup();note("この環境では書き出せません。PCのChrome等で開いてください");});},EX_DUR);
+  audio.onended=()=>{_exColBase=S.frame.colIdx;lyricActive=-1;_exPhase="outro";_exPhaseT0=performance.now();setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording")mediaRec.stop();_cleanup();},EX_DUR);};
+  setTimeout(()=>{if(mediaRec&&mediaRec.state==="recording"&&_exPhase==="song"&&(audio.currentTime||0)<0.1){try{mediaRec.stop();}catch(e){}_cleanup();note("再生できず書き出し中止。PCのブラウザで開いてください");}},EX_DUR+2500);
+  note("SHARE：MV書き出し開始（前後2秒の演出＋曲・自動保存）");}
 
 /* ===== .hmofont ===== */
 function hmoFile(){return{format:"HMO-FONT",version:1,
